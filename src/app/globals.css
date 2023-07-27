@@ -1,27 +1,235 @@
+@import url('https://fonts.cdnfonts.com/css/pokemon-solid');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+ --card: 0, 0%, 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+html, body{
+	margin: 0;
+	overflow-x: hidden;
+}
+
+header h1{
+  font-family: 'Pokemon Solid', sans-serif;
+  font-display: swap;
+  font-size: xx-large;
+  color: #feca1b;
+  text-shadow:
+  3px 3px 0 #3761a8,
+-1px -1px 0 #3761a8,  
+ 1px -1px 0 #3761a8,
+ -1px 1px 0 #3761a8,
+  1px 1px 0 #3761a8;
+ 
+}
+
+header{
+  border-bottom: 20px solid rgb(0 0 0 / 0.5);
+}
+
+.type {
+	border: 2px solid #000;
+	border-radius: 5px;
+	padding: 2px 8px;
+	color: #fff;
+
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.normal {
+	background-color: #A8A878;
+	border-color: #6D6D4E;
+}
+.normal:after {
+	content: 'Normal';
+}
+.normal.sm:after {
+	content: 'Nor';
+}
+.fire {
+	background-color: #F08030;
+	border-color: #9C531F;
+}
+.fire:after {
+	content: 'Fire';
+}
+.fire.sm:after {
+	content: 'Fir';
+}
+.water {
+	background-color: #6890F0;
+	border-color: #445E9C;
+}
+.water:after {
+	content: 'Water';
+}
+.water.sm:after {
+	content: 'Wat';
+}
+.electric {
+	background-color: #F8D030;
+	border-color: #A1871F;
+}
+.electric:after {
+	content: 'Electric';
+}
+.electric.sm:after {
+	content: 'Ele';
+}
+.grass {
+	background-color: #78C850;
+	border-color: #4E8234;
+}
+.grass:after {
+	content: 'Grass';
+}
+.grass.sm:after {
+	content: 'Gra';
+}
+.ice {
+	background-color: #98D8D8;
+	border-color: #638D8D;
+}
+.ice:after {
+	content: 'Ice';
+}
+.fighting {
+	background-color: #C03028;
+	border-color: #7D1F1A;
+}
+.fighting:after {
+	content: 'Fighting';
+}
+.fighting.sm:after {
+	content: 'Fig';
+}
+.poison {
+	background-color: #A040A0;
+	border-color: #682A68;
+}
+.poison:after {
+	content: 'Poison';
+}
+.poison.sm:after {
+	content: 'Poi';
+}
+.ground {
+	background-color: #E0C068;
+	border-color: #927D44;
+}
+.ground:after {
+	content: 'Ground';
+}
+.ground.sm:after {
+	content: 'Gro';
+}
+.flying {
+	background-color: #A890F0;
+	border-color: #6D5E9C;
+}
+.flying:after {
+	content: 'Flying';
+}
+.flying.sm:after {
+	content: 'Fly';
+}
+.psychic {
+	background-color: #F85888;
+	border-color: #A13959;
+}
+.psychic:after {
+	content: 'Psychic';
+}
+.psychic.sm:after {
+	content: 'Psy';
+}
+.bug {
+	background-color: #A8B820;
+	border-color: #6D7815;
+}
+.bug:after {
+	content: 'Bug';
+}
+.rock {
+	background-color: #B8A038;
+	border-color: #786824;
+}
+.rock:after {
+	content: 'Rock';
+}
+.rock.sm:after {
+	content: 'Roc';
+}
+.ghost {
+	background-color: #705898;
+	border-color: #493963;
+}
+.ghost:after {
+	content: 'Ghost';
+}
+.ghost.sm:after {
+	content: 'Gho';
+}
+.dragon {
+	background-color: #7038F8;
+	border-color: #4924A1;
+}
+.dragon:after {
+	content: 'Dragon';
+}
+.dragon.sm:after {
+	content: 'Dra';
+}
+.dark {
+	background-color: #705848;
+	border-color: #49392F;
+}
+.dark:after {
+	content: 'Dark';
+}
+.dark.sm:after {
+	content: 'Dar';
+}
+.steel {
+	background-color: #B8B8D0;
+	border-color: #787887;
+}
+.steel:after {
+	content: 'Steel';
+}
+.steel.sm:after {
+	content: 'Ste';
+}
+.fairy {
+	background-color: #EE99AC;
+	border-color: #9B6470;
+}
+.fairy:after {
+	content: 'Fairy';
+}
+.fairy.sm:after {
+	content: 'Fai';
+}
+@layer components {
+  .grasstype {
+    @apply bg-green-600 text-white
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  h2 {
+    @apply text-2xl font-bold underline text-center
+  }
+
+  nav a {
+    @apply mx-2 hover:text-gray-900 items-center justify-center content-center sm:flex flex-col 
+  }
 }
