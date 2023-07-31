@@ -1,9 +1,6 @@
 {
     "endpoints": [
-        {"name": "Pokemon"},
-        {"name": "Pokemon"},
-        {"name": "Pokemon"},
-        {"name": "Pokemon"},
-        {"name": "Pokemon"}
+        {"name": "Pokemon", "url": "", "content": "Search for Pokemon"}
+       
     ]
 }

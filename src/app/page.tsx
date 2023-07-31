@@ -1,4 +1,5 @@
 import Endpoint from "@/components/custom/endpoints";
+import Footer from "@/components/footer";
 import content from "@/data/content.json";
 
 const { endpoints: endpointsData } = content;
@@ -9,7 +10,7 @@ export default function Home() {
       <h2>Endpoints</h2>
       <div className="flex flex-row flex-wrap justify-evenly gap-4">
         {endpointsData.map((endpoint, index) => (
-          <Endpoint key={index} endpoint={endpoint.name} />
+          <Endpoint key={index} endpoint={endpoint} />
         ))}
       </div>
     </>
