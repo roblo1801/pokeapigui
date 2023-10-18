@@ -5,6 +5,7 @@ import { IconComet, IconHandGrab, IconLayoutGrid } from "@tabler/icons-react";
 import Attributes from "@/components/custom/attributes";
 import PokemonEvolve from "@/components/custom/pokemonevolve";
 import { Badge, Center } from "@mantine/core";
+import capitalize from "@/utils/functions/capitalize";
 
 function decimetersToFeetAndInches(n: number): {
   foot: number;
@@ -19,10 +20,6 @@ function decimetersToFeetAndInches(n: number): {
 function hectogramsToLbs(n: number): number {
   const conversionFactor = 2.20462262;
   return Math.floor(n * conversionFactor) / 10;
-}
-
-export function capitalize(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 async function PokemonInfo({ params }: { params: { pokemon: string } }) {

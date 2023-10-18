@@ -1,7 +1,7 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Pokemon } from "../../utils/server/server";
+
 // import InfiniteScroll from "react-infinite-scroll-component";
 import InfiniteScroll from "react-infinite-scroller";
 
@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useContext, useMemo, useState } from "react";
 import { FetchedPokemonContext } from "@/store/FetchedPokemonProvider";
 import { AuroraBackgroundProvider } from "@nauverse/react-aurora-background";
+import { Pokemon } from "@/types/PokemonType";
 
 const fetchPokemons = async (offset: number, limit: number) => {
   console.log(`getting pokemons ${offset} - ${limit}`);

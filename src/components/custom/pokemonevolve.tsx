@@ -1,8 +1,8 @@
 import React from "react";
 
 import Image from "next/image";
-import { capitalize } from "@/app/pokemon/[pokemon]/page";
 import Link from "next/link";
+import capitalize from "@/utils/functions/capitalize";
 
 async function PokemonEvolve({ name }: { name: string }) {
   const evolve = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then(
