@@ -1,6 +1,4 @@
 "use server"
-
-import { data } from "autoprefixer";
 import Pokedex from "pokedex-promise-v2";
 const P = new Pokedex();
 
@@ -27,22 +25,41 @@ export type Pokemon = {
 
 export const fetchPokemons = async ( offset: number, limit: number) => {
    
-const interval = {
-    offset,
-    limit
+// 
+
+const data = await fetch(
+  `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+)
+  .then(async (res) => await res.json())
+  .then((res: { results: { name: string; url: string }[] }) =>
+    Promise.all(
+      res.results.map(
+        async (e) => await fetch(e.url).then(async (res) => await res.json())
+      )
+    )
+  );
+console.log(data[0].id);
+  return data
 }
 
-    const data = await P.getPokemonsList(interval).then((data: any) => {
-        console.log(data.results[0]);
-        
-        const pokemonsData = data.results.map(async (pokemon: { name: string; url: string }) => {
-      const pokemonsData = await P.getResource(pokemon.url);
-const data = pokemonsData
-      return data;
-    })
-    return Promise.all(pokemonsData);
-    })
+// const interval = {
+//     offset,
+//     limit
+// }
 
-    return data;
-  };
+    // const data = await P.getPokemonsList(interval).then((data: any) => {
+    //     console.log(data.results[0]);
+
+   
+        
+//         const pokemonsData = data.results.map(async (pokemon: { name: string; url: string }) => {
+//       const pokemonsData = await P.getResource(pokemon.url);
+// const data = pokemonsData
+//       return data;
+//     })
+//     return Promise.all(pokemonsData);
+//     })
+
+//     return data;
+//   };
 

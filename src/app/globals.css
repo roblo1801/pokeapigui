@@ -5,14 +5,6 @@
 @tailwind utilities;
 
 
-:root {
- --card: 0, 0%, 100%;
-}
-
-html, body{
-	margin: 0;
-	overflow-x: hidden;
-}
 
 header h1{
   font-family: 'Pokemon Solid', sans-serif;
@@ -47,179 +39,93 @@ header{
 }
 
 .normal {
-	background-color: #A8A878;
-	border-color: #6D6D4E;
+	background-color: #A8A878 !important;
+	border-color: #6D6D4E !important; 
 }
-.normal:after {
-	content: 'Normal';
-}
-.normal.sm:after {
-	content: 'Nor';
-}
+
 .fire {
-	background-color: #F08030;
-	border-color: #9C531F;
-}
-.fire:after {
-	content: 'Fire';
-}
-.fire.sm:after {
-	content: 'Fir';
+	background-color: #F08030 !important; 
+	border-color: #9C531F !important; 
 }
 .water {
-	background-color: #6890F0;
-	border-color: #445E9C;
+	background-color: #6890F0 !important; 
+	border-color: #445E9C !important; 
 }
-.water:after {
-	content: 'Water';
-}
-.water.sm:after {
-	content: 'Wat';
-}
+
 .electric {
-	background-color: #F8D030;
-	border-color: #A1871F;
+	background-color: #F8D030 !important; 
+	border-color: #A1871F !important; 
 }
-.electric:after {
-	content: 'Electric';
-}
-.electric.sm:after {
-	content: 'Ele';
-}
+
 .grass {
-	background-color: #78C850;
-	border-color: #4E8234;
+	background-color: #78C850 !important;
+	border-color: #4E8234 !important;
 }
-.grass:after {
-	content: 'Grass';
-}
-.grass.sm:after {
-	content: 'Gra';
-}
+
 .ice {
-	background-color: #98D8D8;
-	border-color: #638D8D;
+	background-color: #98D8D8 !important; 
+	border-color: #638D8D !important; 
 }
-.ice:after {
-	content: 'Ice';
-}
+
 .fighting {
-	background-color: #C03028;
-	border-color: #7D1F1A;
+	background-color: #C03028 !important; 
+	border-color: #7D1F1A !important; 
 }
-.fighting:after {
-	content: 'Fighting';
-}
-.fighting.sm:after {
-	content: 'Fig';
-}
+
 .poison {
-	background-color: #A040A0;
-	border-color: #682A68;
+	background-color: #A040A0 !important; 
+	border-color: #682A68 !important; 
 }
-.poison:after {
-	content: 'Poison';
-}
-.poison.sm:after {
-	content: 'Poi';
-}
+
 .ground {
-	background-color: #E0C068;
-	border-color: #927D44;
+	background-color: #E0C068 !important; 
+	border-color: #927D44 !important; 
 }
-.ground:after {
-	content: 'Ground';
-}
-.ground.sm:after {
-	content: 'Gro';
-}
+
 .flying {
-	background-color: #A890F0;
-	border-color: #6D5E9C;
+	background-color: #A890F0 !important; 
+	border-color: #6D5E9C !important; 
 }
-.flying:after {
-	content: 'Flying';
-}
-.flying.sm:after {
-	content: 'Fly';
-}
+
 .psychic {
-	background-color: #F85888;
-	border-color: #A13959;
+	background-color: #F85888 !important; 
+	border-color: #A13959 !important; 
 }
-.psychic:after {
-	content: 'Psychic';
-}
-.psychic.sm:after {
-	content: 'Psy';
-}
+
 .bug {
-	background-color: #A8B820;
-	border-color: #6D7815;
+	background-color: #A8B820 !important; 
+	border-color: #6D7815 !important; 
 }
-.bug:after {
-	content: 'Bug';
-}
+
 .rock {
-	background-color: #B8A038;
-	border-color: #786824;
+	background-color: #B8A038 !important; 
+	border-color: #786824 !important; 
 }
-.rock:after {
-	content: 'Rock';
-}
-.rock.sm:after {
-	content: 'Roc';
-}
+
 .ghost {
-	background-color: #705898;
-	border-color: #493963;
+	background-color: #705898 !important; 
+	border-color: #493963 !important; 
 }
-.ghost:after {
-	content: 'Ghost';
-}
-.ghost.sm:after {
-	content: 'Gho';
-}
+
 .dragon {
-	background-color: #7038F8;
-	border-color: #4924A1;
-}
-.dragon:after {
-	content: 'Dragon';
-}
-.dragon.sm:after {
-	content: 'Dra';
+	background-color: #7038F8 !important; 
+	border-color: #4924A1 !important; 
 }
 .dark {
-	background-color: #705848;
-	border-color: #49392F;
+	background-color: #705848 !important; 
+	border-color: #49392F !important; 
 }
-.dark:after {
-	content: 'Dark';
-}
-.dark.sm:after {
-	content: 'Dar';
-}
+
 .steel {
-	background-color: #B8B8D0;
-	border-color: #787887;
+	background-color: #B8B8D0 !important; 
+	border-color: #787887 !important; 
 }
-.steel:after {
-	content: 'Steel';
-}
-.steel.sm:after {
-	content: 'Ste';
-}
+
 .fairy {
-	background-color: #EE99AC;
-	border-color: #9B6470;
+	background-color: #EE99AC !important; 
+	border-color: #9B6470 !important; 
 }
-.fairy:after {
-	content: 'Fairy';
-}
-.fairy.sm:after {
-	content: 'Fai';
-}
+
 @layer components {
   .grasstype {
     @apply bg-green-600 text-white
@@ -227,17 +133,10 @@ header{
 }
 
 @layer base {
-  h2 {
-    @apply text-2xl font-bold underline text-center
-  }
+  
 
   nav a {
     @apply mx-2 hover:text-gray-900 items-center justify-center content-center sm:flex flex-col 
   }
 }
-
-iframe {
-    /* visibility: hidden; */
-	
-  }
 

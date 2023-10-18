@@ -1,6 +1,7 @@
 "use client";
 
 import InfinitePokemon from "@/components/custom/inifinitepokemon";
+import { AuroraBackgroundProvider } from "@nauverse/react-aurora-background";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
@@ -11,8 +12,10 @@ function TestingPage() {
 
   return (
     <QueryClientProvider client={client}>
-      <h1 style={{ textAlign: "center", fontSize: "2rem" }}>Pokemon</h1>
-      <InfinitePokemon />
+      <AuroraBackgroundProvider useRandomness>
+        <h1 style={{ textAlign: "center", fontSize: "2rem" }}>Pokemon</h1>
+        <InfinitePokemon />
+      </AuroraBackgroundProvider>
     </QueryClientProvider>
   );
 }

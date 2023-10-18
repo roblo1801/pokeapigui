@@ -1,14 +1,25 @@
 import React from "react";
-import Pokedex from "pokedex-promise-v2";
 
 import Image from "next/image";
-const P = new Pokedex();
+import { capitalize } from "@/app/pokemon/[pokemon]/page";
+import Link from "next/link";
 
 async function PokemonEvolve({ name }: { name: string }) {
-  const evolve = await P.getPokemonByName(name);
+  const evolve = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then(
+    async (res) => {
+      if (res.status === 404) {
+        return null;
+      }
+
+      return await res.json();
+    }
+  );
 
   return evolve ? (
-    <div>
+    <Link
+      href={`/pokemon/${evolve.name}`}
+      className="flex flex-col items-center gap-0 justify-center"
+    >
       {evolve.sprites.front_default ? (
         <Image
           src={evolve.sprites.front_default}
@@ -17,8 +28,8 @@ async function PokemonEvolve({ name }: { name: string }) {
           height={100}
         />
       ) : null}
-      <p>{evolve.name}</p>
-    </div>
+      <p>{capitalize(evolve.name)}</p>
+    </Link>
   ) : null;
 }
 

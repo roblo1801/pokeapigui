@@ -1,63 +1,71 @@
 import "./globals.css";
+import "@mantine/core/styles.css";
+import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import type { Metadata } from "next";
-import {
-  IconCherry,
-  IconMapPinShare,
-  IconMenu2,
-  IconX,
-} from "@tabler/icons-react";
+import { IconCherry, IconMapPinShare } from "@tabler/icons-react";
 import Hamburger from "@/components/custom/hamburger";
 import Link from "next/link";
 import Footer from "@/components/footer";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
+import { FetchedPokemonProvider } from "@/store/FetchedPokemonProvider";
+import { AuroraBackgroundProvider } from "@nauverse/react-aurora-background";
 
 export const metadata: Metadata = {
   title: "PokeApi Explorer",
   description: "PokeApi Explorer built with Next.js",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // const pokemonData = await fetch(
+  //   `https://pokeapi.co/api/v2/pokemon?limit=${1008}&offset=${0}`,
+  //   {
+  //     cache: "force-cache",
+  //   }
+  // )
+  //   .then(async (res) => await res.json())
+  //   .then((res: { results: { name: string; url: string }[] }) =>
+  //     Promise.all(
+  //       res.results.map(
+  //         async (e) =>
+  //           await fetch(e.url, { cache: "force-cache" }).then(
+  //             async (res) => await res.json()
+  //           )
+  //       )
+  //     )
+  //   );
+
   return (
     <html lang="en">
-      <body>
-        <div
-          style={{ minHeight: "100dvh" }}
-          className="flex flex-col p-0 bg-gray-300"
+      <head>
+        <ColorSchemeScript forceColorScheme="light" />
+      </head>
+
+      <body className="flex flex-col p-0 m-0 bg-gray-300">
+        <MantineProvider
+          forceColorScheme="light"
+          theme={{
+            shadows: {
+              lg: "4px 4px 4px rgba(0, 0, 0, 0.25)",
+            },
+          }}
         >
-          <header className="w-screen flex flex-row justify-between px-4 bg-red-500">
+          <header className="w-full flex flex-row justify-between px-4 bg-red-500">
             <h1>
               <Link href="/">PokeApi Explorer</Link>
             </h1>
-            <Hamburger />
-            <nav className="sm:flex flex-wrap items-center text-base justify-center hidden">
-              <a>
-                <IconMapPinShare size="2rem" />
-                <div>Endpoints</div>
-              </a>
-              <a className="hide">
-                <IconCherry size="2rem" />
-                <div>Berries</div>
-              </a>
-              <a className="hide">
-                <IconCherry size="2rem" />
-                <div>Berries</div>
-              </a>
-              <a className="hide">
-                <IconCherry size="2rem" />
-                <div>Berries</div>
-              </a>
-            </nav>
           </header>
-          <main className="h-full flex flex-col min-h-screen p-0">
-            {children}
-          </main>
-          <footer>
+
+          <main className="flex flex-col min-h-content p-0">{children}</main>
+
+          <ScrollToTopButton />
+          <footer className="text-center items-center self-center fixed bottom-0 text-white bg-black w-full">
             <Footer />
           </footer>
-        </div>
+        </MantineProvider>
       </body>
     </html>
   );
