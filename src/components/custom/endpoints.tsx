@@ -12,10 +12,11 @@ export default function Endpoint({
     name: string;
     url: string;
     content: string;
+    link: string;
   };
 }) {
   return (
-    <Link href={`/${endpoint.name.toLowerCase()}`}>
+    <Link href={`/${endpoint.link}`}>
       <Card shadow="lg" padding="lg" radius="md" bg="dark" withBorder>
         <Card.Section withBorder mah={150} style={{ overflow: "hidden" }}>
           <Image

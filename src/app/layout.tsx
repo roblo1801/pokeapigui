@@ -2,17 +2,13 @@ import "./globals.css";
 import "@mantine/core/styles.css";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import type { Metadata } from "next";
-import { IconCherry, IconMapPinShare } from "@tabler/icons-react";
-import Hamburger from "@/components/custom/hamburger";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
-import { FetchedPokemonProvider } from "@/store/FetchedPokemonProvider";
-import { AuroraBackgroundProvider } from "@nauverse/react-aurora-background";
 
 export const metadata: Metadata = {
-  title: "PokeApi Explorer",
-  description: "PokeApi Explorer built with Next.js",
+  title: "PokemonFinder",
+  description: "Pokemon Api Explorer built with Next.js",
 };
 
 export default async function RootLayout({
@@ -55,11 +51,13 @@ export default async function RootLayout({
         >
           <header className="w-full flex flex-row justify-between px-4 bg-red-500">
             <h1>
-              <Link href="/">PokeApi Explorer</Link>
+              <Link href="/">PokemonFinder</Link>
             </h1>
           </header>
 
-          <main className="flex flex-col min-h-content p-0">{children}</main>
+          <main className="flex flex-col min-h-content pb-10 p-0">
+            {children}
+          </main>
 
           <ScrollToTopButton />
           <footer className="text-center items-center self-center fixed bottom-0 text-white bg-black w-full">

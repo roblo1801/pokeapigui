@@ -12,10 +12,8 @@ function TestingPage() {
 
   return (
     <QueryClientProvider client={client}>
-      <AuroraBackgroundProvider useRandomness>
-        <h1 style={{ textAlign: "center", fontSize: "2rem" }}>Pokemon</h1>
-        <InfinitePokemon />
-      </AuroraBackgroundProvider>
+      <h1 style={{ textAlign: "center", fontSize: "2rem" }}>Pokemon</h1>
+      <InfinitePokemon />
     </QueryClientProvider>
   );
 }

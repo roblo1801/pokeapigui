@@ -2,17 +2,30 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 
+import DomPurify from "isomorphic-dompurify";
 // import InfiniteScroll from "react-infinite-scroll-component";
 import InfiniteScroll from "react-infinite-scroller";
 
-import { Card, Center, Input, Loader, Stack } from "@mantine/core";
+import {
+  Accordion,
+  Button,
+  Card,
+  Center,
+  Checkbox,
+  Drawer,
+  Group,
+  Input,
+  Loader,
+  Stack,
+} from "@mantine/core";
 import Link from "next/link";
 import PokemonType from "./pokemontype";
 import Image from "next/image";
 import { useContext, useMemo, useState } from "react";
 import { FetchedPokemonContext } from "@/store/FetchedPokemonProvider";
-import { AuroraBackgroundProvider } from "@nauverse/react-aurora-background";
 import { Pokemon } from "@/types/PokemonType";
+import { useDisclosure } from "@mantine/hooks";
+import capitalize from "@/utils/functions/capitalize";
 
 const fetchPokemons = async (offset: number, limit: number) => {
   console.log(`getting pokemons ${offset} - ${limit}`);
@@ -38,6 +51,14 @@ const pageSize = 100;
 
 const InfinitePokemon = () => {
   const [query, setQuery] = useState("");
+  const [filters, setFilters] = useState({
+    type: [],
+    generation: [],
+    legendary: [],
+    hasEvolve: [],
+  });
+
+  const [opened, toggle] = useDisclosure(false);
   const { pokemon } = useContext(FetchedPokemonContext);
 
   // const slicePokemon = (start: number, end: number) =>
@@ -81,15 +102,58 @@ const InfinitePokemon = () => {
     return <div>Error</div>;
   }
 
+  const types = [
+    ...new Set(
+      filteredData
+        .map((page: Pokemon[]) =>
+          page.map((pokemon: Pokemon) =>
+            pokemon.types.map(
+              (type: { type: { name: string } }) => type.type.name
+            )
+          )
+        )
+        .flat(2)
+    ),
+  ];
+
   return (
     <div className="flex flex-col mx-2 gap-4">
-      <Input
-        placeholder="Search for Pokemon"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setQuery(e.target.value)
-        }
-      />
-
+      <Group gap={10}>
+        <Input
+          placeholder="Search for Pokemon"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setQuery(DomPurify.sanitize(e.target.value))
+          }
+          style={{ flex: "2" }}
+        />
+        <Button onClick={toggle.toggle}>Filter</Button>
+      </Group>
+      <Drawer
+        position="bottom"
+        opened={opened}
+        onClose={toggle.close}
+        title="Filter"
+      >
+        <Group>
+          <Accordion w="full">
+            <Accordion.Item key={"types"} value="types">
+              <Accordion.Control>Types</Accordion.Control>
+              <Accordion.Panel>
+                <Group>
+                  {types.map((type, index) => (
+                    <Group key="type">
+                      <Checkbox />
+                      <div className={type.concat(" type")}>
+                        {capitalize(type)}
+                      </div>
+                    </Group>
+                  ))}
+                </Group>
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+        </Group>
+      </Drawer>
       <div className="py-2.5">
         <InfiniteScroll
           //   next={fetchNextPage}

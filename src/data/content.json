@@ -1,5 +1,7 @@
 {
     "endpoints": [
-        {"name": "Pokemon", "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png", "content": "Search for Pokemon"}
+        {"name": "Pokemon", "link": "pokemon", "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png", "content": "Search for Pokemon"},
+        {"name": "Cards", "link": "sets", "url": "https://images.pokemontcg.io/sv3pt5/1.png", "content": "Search for Cards"}
+
     ]
 }
