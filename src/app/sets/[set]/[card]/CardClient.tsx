@@ -97,7 +97,11 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
               />
             )}
           </Link>
-        ) : null}
+        ) : !isMobile ? (
+          <div style={{ width: 183 * 1.1, height: 256 * 1.1 }} />
+        ) : (
+          <IconArrowLeft className="invisible" />
+        )}
         <motion.div className="relative">
           {rating > 2 ? (
             <Sparkle
@@ -140,7 +144,11 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
               <IconArrowRight />
             )}
           </Link>
-        ) : null}
+        ) : !isMobile ? (
+          <div style={{ width: 183 * 1.1, height: 256 * 1.1 }} />
+        ) : (
+          <IconArrowRight className="invisible" />
+        )}
       </div>
       <Link href={`/sets/${cardData.set.id}`}>
         <Image
