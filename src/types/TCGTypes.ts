@@ -38,7 +38,13 @@ export type TCGSet = {
         text: string;
         type: string;
       }[];
-      attacks: string[];
+      attacks: {
+        name: string;
+        convertedEnergyCost: number;
+        cost: string[];
+        damage: string;
+        text: string;
+      }[];
       weaknesses: string[];
       resistances: string[];
       retreatCost: string[];

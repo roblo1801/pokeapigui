@@ -17,8 +17,23 @@ header h1{
  1px -1px 0 #3761a8,
  -1px 1px 0 #3761a8,
   1px 1px 0 #3761a8;
- 
 }
+
+.pokefont {
+	font-family: 'Pokemon Solid', sans-serif;
+	font-display: swap;
+	font-size: xx-large;
+	color: #feca1b;
+	text-shadow:
+	3px 3px 0 #3761a8,
+  -1px -1px 0 #3761a8,  
+   1px -1px 0 #3761a8,
+   -1px 1px 0 #3761a8,
+	1px 1px 0 #3761a8;
+   
+  }
+
+
 
 header{
   border-bottom: 20px solid rgb(0 0 0 / 0.5);

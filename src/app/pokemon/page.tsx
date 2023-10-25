@@ -12,7 +12,7 @@ function TestingPage() {
 
   return (
     <QueryClientProvider client={client}>
-      <h1 style={{ textAlign: "center", fontSize: "2rem" }}>Pokemon</h1>
+      <h1 className="pokefont text-center">Pokemon</h1>
       <InfinitePokemon />
     </QueryClientProvider>
   );

@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <>
-      <h1 className="text-center text-3xl">Sets</h1>
+      <h1 className="text-center pokefont">Sets</h1>
       <SetsClient setData={setData.data.reverse()} />
     </>
   );

@@ -1,5 +1,6 @@
 import { TCGCard } from "@/types/TCGTypes";
 import SetsClient from "./CardsClient";
+import Image from "next/image";
 
 type Props = {
   params: {
@@ -20,7 +21,14 @@ export default async function Home({ params }: Props) {
 
   return (
     <>
-      <h1 className="text-center text-3xl">
+      <Image
+        src={cardData.data[0].set.images.logo}
+        alt="Pokeball"
+        width={200}
+        height={200}
+        className="mx-auto"
+      />
+      <h1 className="text-center text-2xl">
         {cardData.data[0].set.series} - {cardData.data[0].set.name}
       </h1>
       <SetsClient

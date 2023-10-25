@@ -1,37 +1,160 @@
 "use client";
 
 import { TCGCard } from "@/types/TCGTypes";
-import { Card, SimpleGrid, Stack, Text } from "@mantine/core";
+import {
+  Card,
+  Group,
+  Rating,
+  SimpleGrid,
+  Stack,
+  Text,
+  em,
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-type Props = { cardData: TCGCard };
+type Props = {
+  cardData: TCGCard;
+  nextCardData: TCGCard;
+  prevCardData: TCGCard;
+};
 
-function SetsClient({ cardData }: Props) {
+function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+
+  const getRating = () => {
+    switch (cardData.rarity) {
+      case "Common":
+        return 0;
+      case "Uncommon":
+        return 0.5;
+      case "Rare":
+        return 1;
+      case "Rare Holo":
+        return 1.5;
+      case "Rare ACE":
+        return 2;
+      case "Rare BREAK":
+        return 2;
+      case "Rare Holo GX":
+        return 2;
+      case "Rare Holo LV.X":
+        return 2;
+      case "Rare Holo Star":
+        return 2;
+      case "Rare Holo V":
+        return 2;
+      case "Rare Holo VMAX":
+        return 2;
+      case "Double Rare":
+        return 2;
+      case "Rare Holo EX":
+        return 2;
+      case "Illustration Rare":
+        return 3;
+      case "Rare Prime":
+        return 3;
+      case "Rare Prism Star":
+        return 3;
+      case "Rare Rainbow":
+        return 3;
+      case "Rare Shining":
+        return 3;
+      case "Rare Shiny GX":
+        return 3;
+      case "Rare Shiny":
+        return 3;
+      case "Rare Secret":
+        return 4;
+      case "Ultra Rare":
+        return 4;
+      case "Special Illustration Rare":
+        return 4.5;
+      case "Hyper Rare":
+        return 5;
+      default:
+        return 0;
+    }
+  };
+
+  const rating = getRating();
+
   return (
     <Stack align="center" mt={20}>
-      <Image
-        width={183 * 2}
-        height={256 * 2}
-        src={cardData.images.large}
-        alt={cardData.name}
-        style={{
-          boxShadow: "4px 4px 4px gray",
-          borderRadius: "19px",
-        }}
+      <div className="flex w-full items-center justify-evenly">
+        {prevCardData ? (
+          <Link href={`/sets/${prevCardData.set.id}/${prevCardData.id}`}>
+            {isMobile ? (
+              <IconArrowLeft />
+            ) : (
+              <Image
+                width={183 * 1.1}
+                height={256 * 1.1}
+                src={prevCardData.images.small}
+                alt={prevCardData.name}
+                style={{
+                  filter: "blur(1px)",
+                  boxShadow: "4px 4px 4px gray",
+                  borderRadius: "10px",
+                }}
+              />
+            )}
+          </Link>
+        ) : null}
+        <Image
+          width={183 * 1.5}
+          height={256 * 1.5}
+          src={cardData.images.large}
+          alt={cardData.name}
+          style={{
+            boxShadow: "4px 4px 4px gray",
+            borderRadius: "14px",
+          }}
+        />
+        {nextCardData ? (
+          <Link href={`/sets/${nextCardData.set.id}/${nextCardData.id}`}>
+            {!isMobile ? (
+              <Image
+                width={183 * 1.1}
+                height={256 * 1.1}
+                src={nextCardData.images.small}
+                alt={nextCardData.name}
+                style={{
+                  filter: "blur(1px)",
+                  boxShadow: "4px 4px 4px gray",
+                  borderRadius: "10px",
+                }}
+              />
+            ) : (
+              <IconArrowRight />
+            )}
+          </Link>
+        ) : null}
+      </div>
+      <Link href={`/sets/${cardData.set.id}`}>
+        <Image
+          alt={cardData.set.name}
+          width={200}
+          height={200}
+          src={cardData.set.images.logo}
+        />
+      </Link>
+      <Rating
+        color={rating === 5 ? "purple" : "yellow"}
+        readOnly
+        size="lg"
+        fractions={2}
+        value={rating}
       />
-      <Image
-        alt={cardData.set.name}
-        width={200}
-        height={200}
-        src={cardData.set.images.logo}
-      />
-
       <Text>{cardData.rarity}</Text>
-      <Text component={Link} href={cardData.tcgplayer.url}>
-        TCGPlayer Prices
-      </Text>
+      {cardData.tcgplayer ? (
+        <Text component={Link} href={cardData.tcgplayer.url}>
+          TCGPlayer Prices
+        </Text>
+      ) : null}
     </Stack>
   );
 }
