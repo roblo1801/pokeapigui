@@ -1,20 +1,14 @@
 "use client";
 
 import { TCGCard } from "@/types/TCGTypes";
-import {
-  Card,
-  Group,
-  Rating,
-  SimpleGrid,
-  Stack,
-  Text,
-  em,
-} from "@mantine/core";
+import { Rating, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Sparkle from "react-sparkle";
 
 type Props = {
   cardData: TCGCard;
@@ -104,16 +98,30 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
             )}
           </Link>
         ) : null}
-        <Image
-          width={183 * 1.5}
-          height={256 * 1.5}
-          src={cardData.images.large}
-          alt={cardData.name}
-          style={{
-            boxShadow: "4px 4px 4px gray",
-            borderRadius: "14px",
-          }}
-        />
+        <motion.div className="relative">
+          {rating > 2 ? (
+            <Sparkle
+              color="random"
+              maxSize={20}
+              flickerSpeed="slowest"
+              fadeOutSpeed={25}
+            />
+          ) : null}
+
+          <Image
+            width={183 * 1.5}
+            height={256 * 1.5}
+            priority
+            src={cardData.images.large}
+            alt={cardData.name}
+            placeholder="blur"
+            blurDataURL="/pokemonlogo.svg"
+            style={{
+              boxShadow: "4px 4px 4px gray",
+              borderRadius: "14px",
+            }}
+          />
+        </motion.div>
         {nextCardData ? (
           <Link href={`/sets/${nextCardData.set.id}/${nextCardData.id}`}>
             {!isMobile ? (
@@ -142,13 +150,16 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
           src={cardData.set.images.logo}
         />
       </Link>
-      <Rating
-        color={rating === 5 ? "purple" : "yellow"}
-        readOnly
-        size="lg"
-        fractions={2}
-        value={rating}
-      />
+      <div style={{ position: "relative" }}>
+        <Rating
+          color={rating === 5 ? "purple" : "yellow"}
+          readOnly
+          size="lg"
+          fractions={2}
+          value={rating}
+        ></Rating>
+        {rating > 2 ? <Sparkle fadeOutSpeed={25} overflowPx={5} /> : null}
+      </div>
       <Text>{cardData.rarity}</Text>
       {cardData.tcgplayer ? (
         <Text component={Link} href={cardData.tcgplayer.url}>
