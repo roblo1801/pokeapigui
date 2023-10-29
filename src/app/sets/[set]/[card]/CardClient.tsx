@@ -1,5 +1,6 @@
 "use client";
 
+import AddToCardsButton from "@/components/custom/AddToCardsButton";
 import { TCGCard } from "@/types/TCGTypes";
 import { Rating, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -158,6 +159,7 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
           src={cardData.set.images.logo}
         />
       </Link>
+      <AddToCardsButton card={cardData} />
       <div style={{ position: "relative" }}>
         <Rating
           color={rating === 5 ? "purple" : "yellow"}

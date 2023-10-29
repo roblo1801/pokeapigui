@@ -4,8 +4,10 @@ import PokemonType from "@/components/custom/pokemontype";
 import { IconComet, IconHandGrab, IconLayoutGrid } from "@tabler/icons-react";
 import Attributes from "@/components/custom/attributes";
 import PokemonEvolve from "@/components/custom/pokemonevolve";
-import { Badge, Center } from "@mantine/core";
+import { Badge, Button, Center } from "@mantine/core";
 import capitalize from "@/utils/functions/capitalize";
+import { SignedIn } from "@clerk/nextjs";
+import AddToPokemonButton from "@/components/custom/AddToPokemonButton";
 
 function decimetersToFeetAndInches(n: number): {
   foot: number;
@@ -82,6 +84,9 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
         )}
       </div>
 
+      <SignedIn>
+        <AddToPokemonButton pokemon={pokemonData} />
+      </SignedIn>
       <div className="flex flex-row gap-2 justify-between">
         <div className="flex flex-row gap-1">
           {pokemonData.types.map((type: { type: { name: string } }) => (
