@@ -2,6 +2,7 @@
 
 import AddToCardsButton from "@/components/custom/AddToCardsButton";
 import { TCGCard } from "@/types/TCGTypes";
+import { SignedIn } from "@clerk/nextjs";
 import { Rating, Stack, Text, em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
@@ -159,7 +160,9 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
           src={cardData.set.images.logo}
         />
       </Link>
-      <AddToCardsButton card={cardData} />
+      <SignedIn>
+        <AddToCardsButton card={cardData} />
+      </SignedIn>
       <div style={{ position: "relative" }}>
         <Rating
           color={rating === 5 ? "purple" : "yellow"}
