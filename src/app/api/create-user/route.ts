@@ -5,7 +5,7 @@ import { supabaseClient } from '@/supabase';
 export async function POST(req: NextRequest) {
     const evt : WebhookEvent = await req.json();
 
-    const supabase = await supabaseClient(process.env.NEXT_PUBLIC_SUPABASE_SECRET_KEY);
+    const supabase = await supabaseClient(process.env.SUPABASE_SECRET_KEY);
 
     const { data, error } = await supabase
     .from('userdata')
