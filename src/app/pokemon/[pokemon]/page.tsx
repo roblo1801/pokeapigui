@@ -22,7 +22,7 @@ const DynamicAddToPokemonButton = dynamic(
 );
 
 const DynamicAttributes = dynamic(
-  () => import("@/components/custom/Attributes"),
+  () => import("@/components/custom/attributes"),
   {
     ssr: false,
     loading: () => <div>Loading...</div>,
