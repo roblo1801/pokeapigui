@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Accordion } from "@mantine/core";
-import classes from "./Attributes.module.css";
+import classes from "./attributes.module.css";
 
 function Attributes({
   items,
