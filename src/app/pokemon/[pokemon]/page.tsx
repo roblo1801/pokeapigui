@@ -22,7 +22,7 @@ const DynamicAddToPokemonButton = dynamic(
 );
 
 const DynamicAttributes = dynamic(
-  () => import("../../../components/custom/Attributes"),
+  () => import("@/components/custom/Attributes"),
   {
     ssr: false,
     loading: () => <div>Loading...</div>,
@@ -30,7 +30,7 @@ const DynamicAttributes = dynamic(
 );
 
 const DynamicPokemonEvolve = dynamic(
-  () => import("../../../components/custom/pokemonevolve"),
+  () => import("@/components/custom/pokemonevolve"),
   {
     ssr: false,
     loading: () => <div>Loading...</div>,
