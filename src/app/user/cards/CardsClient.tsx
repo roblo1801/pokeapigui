@@ -4,8 +4,9 @@ import RemoveFromCardsButton from "@/components/custom/RemoveFromCardsButton";
 import { getData } from "@/supabaseRequests";
 import { TCGCard } from "@/types/TCGTypes";
 import { useAuth } from "@clerk/nextjs";
-import { Center, Loader, SimpleGrid } from "@mantine/core";
+import { Indicator, Loader, SimpleGrid } from "@mantine/core";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
 
@@ -43,9 +44,9 @@ export default function CardsClient({}: Props) {
 
   if (isLoading)
     return (
-      <Center>
+      <div className="flex items-center">
         <Loader />
-      </Center>
+      </div>
     );
 
   if (!data || data.length < 1)
@@ -54,22 +55,27 @@ export default function CardsClient({}: Props) {
   console.log(data, "data");
 
   return (
-    <div className="flex justify-center">
-      <SimpleGrid cols={{ base: 2, sm: 4, lg: 6 }}>
+    <div className="flex justify-center p-2">
+      <SimpleGrid cols={{ base: 4, sm: 8, lg: 15 }}>
         {data.map((card: TCGCard, index: number) => (
-          <div key={index}>
-            <Image
-              style={{
-                boxShadow: "4px 4px 4px gray",
-                borderRadius: "5px",
-              }}
-              width={183}
-              height={256}
-              src={card.images.small}
-              alt={card.name}
-            />
-            <RemoveFromCardsButton card={card} />
-          </div>
+          <Indicator
+            key={index}
+            color="transparent"
+            label={<RemoveFromCardsButton card={card} />}
+          >
+            <Link href={`/sets/${card.set.id}/${card.id}`}>
+              <Image
+                style={{
+                  boxShadow: "4px 4px 4px gray",
+                  borderRadius: "5px",
+                }}
+                width={183}
+                height={256}
+                src={card.images.small}
+                alt={card.name}
+              />
+            </Link>
+          </Indicator>
         ))}
       </SimpleGrid>
     </div>

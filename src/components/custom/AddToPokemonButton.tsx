@@ -10,7 +10,7 @@ type Props = {
 };
 
 function AddToPokemonButton({ pokemon }: Props) {
-  const { userId, getToken } = useAuth();
+  const { userId, getToken, isSignedIn } = useAuth();
 
   const addToCollection = async (data: any) => {
     const token = await getToken({ template: "supabase" });
@@ -19,7 +19,7 @@ function AddToPokemonButton({ pokemon }: Props) {
     return "Failed";
   };
 
-  return (
+  return isSignedIn ? (
     <div className="flex justify-center my-4 w-full">
       <Button
         variant="gradient"
@@ -30,7 +30,7 @@ function AddToPokemonButton({ pokemon }: Props) {
         Add To Collection
       </Button>
     </div>
-  );
+  ) : null;
 }
 
 export default AddToPokemonButton;

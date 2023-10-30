@@ -1,13 +1,8 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
+import { UserButton, useAuth } from "@clerk/nextjs";
 import { Button, Loader, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconExclamationMark,
-  IconLogin2,
-  IconLogout2,
-  IconUser,
-} from "@tabler/icons-react";
+import { IconLogin2, IconUser } from "@tabler/icons-react";
 import Link from "next/link";
 import React from "react";
 
@@ -35,10 +30,11 @@ function Account({}: Props) {
         <IconUser />
         <div>Account</div>
       </Link>
-      <div className="flex flex-col items-center" onClick={toggle.open}>
+      {/* <div className="flex flex-col items-center" onClick={toggle.open}>
         <IconLogout2 />
         <div>Logout</div>
-      </div>
+      </div> */}
+      <UserButton />
       <Modal
         centered
         variant="light"

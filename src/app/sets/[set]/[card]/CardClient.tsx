@@ -1,22 +1,20 @@
 "use client";
 
-import AddToCardsButton from "@/components/custom/AddToCardsButton";
 import { TCGCard } from "@/types/TCGTypes";
-import { SignedIn } from "@clerk/nextjs";
-import { Rating, Stack, Text, em } from "@mantine/core";
+import { em } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
-import Sparkle from "react-sparkle";
+import dynamic from "next/dynamic";
 
 type Props = {
   cardData: TCGCard;
   nextCardData: TCGCard;
   prevCardData: TCGCard;
 };
+
+const DynamicCard = dynamic(() => import("./Card"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
@@ -79,107 +77,13 @@ function SetsClient({ cardData, nextCardData, prevCardData }: Props) {
   const rating = getRating();
 
   return (
-    <Stack align="center" mt={20}>
-      <div className="flex w-full items-center justify-evenly">
-        {prevCardData ? (
-          <Link href={`/sets/${prevCardData.set.id}/${prevCardData.id}`}>
-            {isMobile ? (
-              <IconArrowLeft />
-            ) : (
-              <Image
-                width={183 * 1.1}
-                height={256 * 1.1}
-                src={prevCardData.images.small}
-                alt={prevCardData.name}
-                style={{
-                  filter: "blur(1px)",
-                  boxShadow: "4px 4px 4px gray",
-                  borderRadius: "10px",
-                }}
-              />
-            )}
-          </Link>
-        ) : !isMobile ? (
-          <div style={{ width: 183 * 1.1, height: 256 * 1.1 }} />
-        ) : (
-          <IconArrowLeft className="invisible" />
-        )}
-        <motion.div className="relative">
-          {rating > 2 ? (
-            <Sparkle
-              color="random"
-              maxSize={20}
-              flickerSpeed="slowest"
-              fadeOutSpeed={25}
-            />
-          ) : null}
-
-          <Image
-            width={183 * 1.5}
-            height={256 * 1.5}
-            priority
-            src={cardData.images.large}
-            alt={cardData.name}
-            placeholder="blur"
-            blurDataURL="/pokemonlogo.svg"
-            style={{
-              boxShadow: "4px 4px 4px gray",
-              borderRadius: "14px",
-            }}
-          />
-        </motion.div>
-        {nextCardData ? (
-          <Link href={`/sets/${nextCardData.set.id}/${nextCardData.id}`}>
-            {!isMobile ? (
-              <Image
-                width={183 * 1.1}
-                height={256 * 1.1}
-                src={nextCardData.images.small}
-                alt={nextCardData.name}
-                style={{
-                  filter: "blur(1px)",
-                  boxShadow: "4px 4px 4px gray",
-                  borderRadius: "10px",
-                }}
-              />
-            ) : (
-              <IconArrowRight />
-            )}
-          </Link>
-        ) : !isMobile ? (
-          <div style={{ width: 183 * 1.1, height: 256 * 1.1 }} />
-        ) : (
-          <IconArrowRight className="invisible" />
-        )}
-      </div>
-      <Link href={`/sets/${cardData.set.id}`}>
-        <Image
-          alt={cardData.set.name}
-          width={200}
-          height={200}
-          src={cardData.set.images.logo}
-        />
-      </Link>
-      <SignedIn>
-        <AddToCardsButton card={cardData} />
-      </SignedIn>
-      <div style={{ position: "relative" }}>
-        <Rating
-          color={rating === 5 ? "purple" : "yellow"}
-          readOnly
-          size="lg"
-          fractions={2}
-          value={rating}
-        ></Rating>
-        {rating > 2 ? <Sparkle fadeOutSpeed={25} overflowPx={5} /> : null}
-      </div>
-      <Text>{cardData.rarity}</Text>
-      {cardData.tcgplayer ? (
-        <Text component={Link} href={cardData.tcgplayer.url}>
-          TCGPlayer Prices
-        </Text>
-      ) : null}
-    </Stack>
+    <DynamicCard
+      isMobile={isMobile}
+      rating={rating}
+      cardData={cardData}
+      nextCardData={nextCardData}
+      prevCardData={prevCardData}
+    />
   );
 }
 

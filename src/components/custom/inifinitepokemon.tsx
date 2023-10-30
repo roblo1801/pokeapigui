@@ -25,7 +25,7 @@ import { useContext, useMemo, useState } from "react";
 import { FetchedPokemonContext } from "@/store/FetchedPokemonProvider";
 import { Pokemon } from "@/types/PokemonType";
 import { useDisclosure } from "@mantine/hooks";
-import capitalize from "@/utils/functions/capitalize";
+import { capitalize } from "@/utils/functions/capitalize";
 
 const fetchPokemons = async (offset: number, limit: number) => {
   console.log(`getting pokemons ${offset} - ${limit}`);

@@ -1,5 +1,6 @@
 "use client"; // Error components must be Client Components
 
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Error({
@@ -9,6 +10,8 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
@@ -19,9 +22,9 @@ export default function Error({
       <h2>Something went wrong!</h2>
       <button
         className="border-black border p-1 rounded text-white bg-red-500"
-        onClick={() => reset()}
+        onClick={() => router.back()}
       >
-        Try again
+        Go Back
       </button>
     </div>
   );

@@ -1,11 +1,17 @@
 "use client";
 
-import InfinitePokemon from "@/components/custom/inifinitepokemon";
-import { AuroraBackgroundProvider } from "@nauverse/react-aurora-background";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
 const client = new QueryClient();
+
+const DynamicInfinitePokemon = dynamic(
+  () => import("@/components/custom/inifinitepokemon"),
+  {
+    ssr: false,
+  }
+);
 
 function TestingPage() {
   const [client] = useState(new QueryClient());
@@ -13,7 +19,7 @@ function TestingPage() {
   return (
     <QueryClientProvider client={client}>
       <h1 className="pokefont text-center">Pokemon</h1>
-      <InfinitePokemon />
+      <DynamicInfinitePokemon />
     </QueryClientProvider>
   );
 }

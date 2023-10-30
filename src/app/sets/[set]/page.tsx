@@ -23,7 +23,7 @@ export default async function Home({ params }: Props) {
     <>
       <Image
         src={cardData.data[0].set.images.logo}
-        alt="Pokeball"
+        alt="Set Logo"
         width={200}
         height={200}
         className="mx-auto"

@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@mantine/core/styles/global.css";
 import "@mantine/core/styles.css";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import type { Metadata } from "next";
@@ -50,6 +51,7 @@ export default async function RootLayout({
               shadows: {
                 lg: "4px 4px 4px rgba(0, 0, 0, 0.25)",
               },
+              defaultGradient: { from: "indigo", to: "cyan" },
             }}
           >
             <header className="w-full flex flex-row justify-between px-4 pt-2 bg-red-500">
@@ -64,9 +66,9 @@ export default async function RootLayout({
             </main>
 
             <ScrollToTopButton />
-            <footer className="text-center items-center self-center fixed bottom-0 text-white bg-black w-full">
+            {/* <footer className="text-center items-center self-center fixed bottom-0 text-white bg-black w-full">
               <Footer />
-            </footer>
+            </footer> */}
           </MantineProvider>
         </body>
       </html>

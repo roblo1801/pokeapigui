@@ -1,28 +1,45 @@
-import React from "react";
-import Image from "next/image";
-import PokemonType from "@/components/custom/pokemontype";
 import { IconComet, IconHandGrab, IconLayoutGrid } from "@tabler/icons-react";
-import Attributes from "@/components/custom/attributes";
-import PokemonEvolve from "@/components/custom/pokemonevolve";
-import { Badge, Button, Center } from "@mantine/core";
-import capitalize from "@/utils/functions/capitalize";
-import { SignedIn } from "@clerk/nextjs";
-import AddToPokemonButton from "@/components/custom/AddToPokemonButton";
+import {
+  capitalize,
+  decimetersToFeetAndInches,
+  hectogramsToLbs,
+} from "@/utils/functions/capitalize";
+import dynamic from "next/dynamic";
 
-function decimetersToFeetAndInches(n: number): {
-  foot: number;
-  inch: number;
-} {
-  const inches = n * 3.93701;
-  const foot = Math.floor(inches / 12);
-  const inch = Math.floor(inches % 12);
-  return { foot, inch };
-}
+const DynamicPokemonType = dynamic(
+  () => import("@/components/custom/pokemontype"),
+  {
+    ssr: false,
+  }
+);
 
-function hectogramsToLbs(n: number): number {
-  const conversionFactor = 2.20462262;
-  return Math.floor(n * conversionFactor) / 10;
-}
+const DynamicAddToPokemonButton = dynamic(
+  () => import("@/components/custom/AddToPokemonButton"),
+  {
+    ssr: false,
+    loading: () => <div>Loading...</div>,
+  }
+);
+
+const DynamicAttributes = dynamic(
+  () => import("../../../components/custom/Attributes"),
+  {
+    ssr: false,
+    loading: () => <div>Loading...</div>,
+  }
+);
+
+const DynamicPokemonEvolve = dynamic(
+  () => import("../../../components/custom/pokemonevolve"),
+  {
+    ssr: false,
+    loading: () => <div>Loading...</div>,
+  }
+);
+
+const DynamicBadge = dynamic(() => import("./Badged"), { ssr: false });
+
+const DynamicImage = dynamic(() => import("./PokemonImage"), { ssr: false });
 
 async function PokemonInfo({ params }: { params: { pokemon: string } }) {
   const { pokemon } = params;
@@ -38,7 +55,8 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
     return data;
   });
 
-  if (!pokemonData) return <Center>No Pokemon Found</Center>;
+  if (!pokemonData)
+    return <div className="flex items-center">No Pokemon Found</div>;
 
   const pokemonSpeciesData = await fetch(
     `https://pokeapi.co/api/v2/pokemon-species/${pokemonData.species.name}`
@@ -54,15 +72,6 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
     return data;
   });
 
-  // const pokemonData = await P.getPokemonByName(pokemon);
-  // const pokemonSpeciesData = await P.getPokemonSpeciesByName(pokemon);
-
-  // const pokemonEvolutionChainData = pokemonSpeciesData.evolution_chain
-  //   ? await P.getResource(pokemonSpeciesData.evolution_chain.url)
-  //   : null;
-
-  //   console.log(pokemonEvolutionChainData.chain.evolves_to.species);
-
   return (
     <div className="relative p-2.5 pb-10">
       <div className="absolute top-2.5 right-2.5 font-bold text-2xl">
@@ -71,26 +80,14 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
       <h2 className="font-bold text-3xl">
         {pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)}
       </h2>
-      <div className="flex justify-center">
-        {pokemonData.sprites.other["official-artwork"].front_default ? (
-          <Image
-            src={pokemonData.sprites.other["official-artwork"].front_default}
-            alt={pokemonData.name}
-            width={300}
-            height={300}
-          />
-        ) : (
-          <div>No Image Found</div>
-        )}
-      </div>
+      <DynamicImage pokemonData={pokemonData} />
 
-      <SignedIn>
-        <AddToPokemonButton pokemon={pokemonData} />
-      </SignedIn>
+      <DynamicAddToPokemonButton pokemon={pokemonData} />
+
       <div className="flex flex-row gap-2 justify-between">
         <div className="flex flex-row gap-1">
           {pokemonData.types.map((type: { type: { name: string } }) => (
-            <PokemonType key={type.type.name} type={type.type.name} />
+            <DynamicPokemonType key={type.type.name} type={type.type.name} />
           ))}
         </div>
         <div className="text-2xl">
@@ -101,7 +98,7 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
           {hectogramsToLbs(pokemonData.weight)} lbs
         </div>
       </div>
-      <Attributes
+      <DynamicAttributes
         items={[
           {
             key: "Abilities",
@@ -157,7 +154,7 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
                         e.version_group.name ===
                         "brilliant-diamond-and-shining-pearl"
                     )?.move_learn_method.name === "level-up" ? (
-                      <Badge variant="" radius="sm">
+                      <DynamicBadge radius="sm">
                         Lv{" "}
                         {
                           move.version_group_details.find(
@@ -166,7 +163,7 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
                               "brilliant-diamond-and-shining-pearl"
                           )?.level_learned_at
                         }
-                      </Badge>
+                      </DynamicBadge>
                     ) : null
                   ) : null}
                 </div>
@@ -174,13 +171,13 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
             ),
           },
         ]}
-      ></Attributes>
+      />
 
       {pokemonEvolutionChainData.chain.evolves_to.length > 0 ? (
         <>
           <h2>Evolution Chain</h2>
           <div className="flex flex-wrap items-center justify-center">
-            <PokemonEvolve
+            <DynamicPokemonEvolve
               name={
                 pokemonEvolutionChainData.chain.species.name !==
                 pokemonData.name
@@ -198,12 +195,12 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
                     key={evolution.species.name}
                     className="flex flex-wrap items-center justify-center"
                   >
-                    <PokemonEvolve name={evolution.species.name} />
+                    <DynamicPokemonEvolve name={evolution.species.name} />
                     {evolution.evolves_to.length > 0 ? (
                       <div className="flex flex-col">
                         {evolution.evolves_to.map(
                           (e: { species: { name: string } }) => (
-                            <PokemonEvolve
+                            <DynamicPokemonEvolve
                               name={e.species.name}
                               key={e.species.name}
                             />
@@ -218,7 +215,7 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
           </div>
         </>
       ) : (
-        <Center>Does Not Evolve</Center>
+        <div className="flex items-center">Does Not Evolve</div>
       )}
     </div>
   );

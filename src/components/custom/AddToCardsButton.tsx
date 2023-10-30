@@ -1,8 +1,7 @@
 "use client";
-import { Pokemon } from "@/types/PokemonType";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@mantine/core";
-import { addToCards, addToPokemon } from "@/supabaseRequests";
+import { addToCards } from "@/supabaseRequests";
 import React from "react";
 import { TCGCard } from "@/types/TCGTypes";
 

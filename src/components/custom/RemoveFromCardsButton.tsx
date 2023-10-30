@@ -6,6 +6,7 @@ import { removeFromCards, removeFromPokemon } from "@/supabaseRequests";
 import React from "react";
 import { mutate } from "swr";
 import { TCGCard } from "@/types/TCGTypes";
+import { IconMinus } from "@tabler/icons-react";
 
 type Props = {
   card: TCGCard;
@@ -28,9 +29,16 @@ export default function RemoveFromCardsButton({ card }: Props) {
         variant="gradient"
         gradient={{ from: "red.5", to: "red.9" }}
         onClick={() => removeFromCollection(card)}
-        style={{ border: "1px solid black", boxShadow: "2px 2px 2px grey" }}
+        style={{
+          border: "1px solid black",
+          boxShadow: "2px 2px 2px grey",
+          borderRadius: "50%",
+          padding: "0px",
+          width: "20px",
+          height: "20px",
+        }}
       >
-        Remove
+        <IconMinus stroke="1px" />
       </Button>
     </div>
   );
