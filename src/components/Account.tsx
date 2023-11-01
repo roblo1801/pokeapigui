@@ -34,7 +34,16 @@ function Account({}: Props) {
         <IconLogout2 />
         <div>Logout</div>
       </div> */}
-      <UserButton />
+      <div className="flex flex-col items-center justify-center">
+        <UserButton
+          appearance={{
+            elements: {
+              root: "flex flex-col items-center justify-center gap-2",
+              avatar: "w-12 h-12",
+            },
+          }}
+        />
+      </div>
       <Modal
         centered
         variant="light"

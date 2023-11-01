@@ -1,5 +1,4 @@
 import Collection from "@/components/custom/collections";
-import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -12,7 +11,7 @@ const collections = [
   },
   {
     name: "Cards",
-    link: "user/cards",
+    link: "user/sets",
     url: "https://images.pokemontcg.io/sv3pt5/4.png",
   },
 ];

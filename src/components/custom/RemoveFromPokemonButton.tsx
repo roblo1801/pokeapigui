@@ -24,10 +24,12 @@ function RemoveFromPokemonButton({ pokemon }: Props) {
   return (
     <div className="flex justify-center my-2 w-full">
       <Button
-        variant="gradient"
-        gradient={{ from: "red.5", to: "red.9" }}
         onClick={() => removeFromCollection(pokemon)}
-        style={{ border: "1px solid black", boxShadow: "2px 2px 2px grey" }}
+        style={{
+          border: "1px solid black",
+          boxShadow: "2px 2px 2px grey",
+          background: "linear-gradient(90deg, #ff0000, #660000 50%)",
+        }}
       >
         Remove
       </Button>
