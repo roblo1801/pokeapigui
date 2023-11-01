@@ -44,7 +44,20 @@ export default function CardsClient({ allPoke }: Props) {
     );
 
   if (!data || data.length < 1)
-    return <div className="text-center">No Cards Found</div>;
+    return (
+      <div className="flex flex-col items-center">
+        <div className="text-center">No Cards Found</div>
+        <div>Add Cards to Start a Collection</div>
+        <Link href={`/sets/${allPoke[0].set.id}`}>
+          <Image
+            width={183}
+            height={256}
+            src={allPoke[0].set.images.logo}
+            alt={allPoke[0].set.name}
+          />
+        </Link>
+      </div>
+    );
 
   const filteredCards = allPoke.filter((card) => data.includes(card.id));
   const estimateTwo = filteredCards
