@@ -4,13 +4,12 @@ import "@mantine/core/styles.css";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/components/footer";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { ClerkProvider } from "@clerk/nextjs";
 import Account from "@/components/Account";
 
 export const metadata: Metadata = {
-  title: "PokemonFinder",
+  title: "Pokedex Replica",
   description: "Pokemon Api Explorer built with Next.js",
 };
 
@@ -56,7 +55,7 @@ export default async function RootLayout({
           >
             <header className="w-full flex flex-row justify-between px-4 pt-2 bg-red-500">
               <h1>
-                <Link href="/">PokemonFinder</Link>
+                <Link href="/">Pokedex Replica</Link>
               </h1>
               <Account />
             </header>
