@@ -28,7 +28,7 @@ function RemoveFromPokemonButton({ pokemon }: Props) {
         style={{
           border: "1px solid black",
           boxShadow: "2px 2px 2px grey",
-          background: "linear-gradient(90deg, #ff0000, #660000 50%)",
+          background: "linear-gradient(90deg, #ff0000, #660000 90%)",
         }}
       >
         Remove

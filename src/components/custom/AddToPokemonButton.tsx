@@ -22,10 +22,12 @@ function AddToPokemonButton({ pokemon }: Props) {
   return isSignedIn ? (
     <div className="flex justify-center my-4 w-full">
       <Button
-        variant="gradient"
-        gradient={{ from: "indigo", to: "cyan" }}
         onClick={() => addToCollection(pokemon)}
-        style={{ border: "1px solid black", boxShadow: "2px 2px 2px grey" }}
+        style={{
+          border: "1px solid black",
+          boxShadow: "2px 2px 2px grey",
+          background: "linear-gradient(90deg, indigo, cyan 90%)",
+        }}
       >
         Add To Collection
       </Button>

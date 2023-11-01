@@ -2,7 +2,7 @@
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { Button, Loader, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconLogin2, IconUser } from "@tabler/icons-react";
+import { IconArchive, IconLogin2, IconUser } from "@tabler/icons-react";
 import Link from "next/link";
 import React from "react";
 
@@ -27,8 +27,8 @@ function Account({}: Props) {
   return (
     <div className="flex gap-2">
       <Link href="/user" className="flex flex-col items-center">
-        <IconUser />
-        <div>Account</div>
+        <IconArchive />
+        <div>Collection</div>
       </Link>
       {/* <div className="flex flex-col items-center" onClick={toggle.open}>
         <IconLogout2 />

@@ -5,7 +5,7 @@ import RemoveFromCardsButton from "@/components/custom/RemoveFromCardsButton";
 import { getData } from "@/supabaseRequests";
 import { TCGCard } from "@/types/TCGTypes";
 import { useAuth } from "@clerk/nextjs";
-import { Group, Indicator, Loader, SimpleGrid } from "@mantine/core";
+import { Indicator, Loader, SimpleGrid } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -46,12 +46,22 @@ export default function CardsClient({ allPoke }: Props) {
   if (!data || data.length < 1)
     return <div className="text-center">No Cards Found</div>;
 
-  console.log(data, "data");
+  const filteredCards = allPoke.filter((card) => data.includes(card.id));
+  const estimateTwo = Math.round(
+    filteredCards
+      .filter((a) => a.cardmarket.prices.averageSellPrice)
+      .map((a) => a.cardmarket.prices.averageSellPrice)
+      .reduce((a, b) => a + b)
+  );
 
   return (
     <div className="flex flex-col justify-center p-4">
-      <div className="flex justify-center">
-        <div>% Collected</div>
+      <div className="flex gap-2 justify-center">
+        <div>
+          {Math.round((filteredCards.length / allPoke.length) * 100)}% Collected
+          {`(${filteredCards.length}/${allPoke.length})`}
+        </div>
+        <div>Est. Value ${estimateTwo}</div>
       </div>
       <SimpleGrid cols={{ base: 4, sm: 8, lg: 15 }}>
         {allPoke

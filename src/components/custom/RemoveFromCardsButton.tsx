@@ -26,8 +26,6 @@ export default function RemoveFromCardsButton({ card }: Props) {
   return (
     <div className="flex justify-center my-2 w-full">
       <Button
-        variant="gradient"
-        gradient={{ from: "red.5", to: "red.9" }}
         onClick={() => removeFromCollection(card)}
         style={{
           border: "1px solid black",
@@ -36,6 +34,7 @@ export default function RemoveFromCardsButton({ card }: Props) {
           padding: "0px",
           width: "20px",
           height: "20px",
+          background: "linear-gradient(90deg, #ff0000, #660000 90%)",
         }}
       >
         <IconMinus stroke="1px" />
