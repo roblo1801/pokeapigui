@@ -47,12 +47,9 @@ export default function CardsClient({ allPoke }: Props) {
     return <div className="text-center">No Cards Found</div>;
 
   const filteredCards = allPoke.filter((card) => data.includes(card.id));
-  const estimateTwo = Math.round(
-    filteredCards
-      .filter((a) => a.cardmarket.prices.averageSellPrice)
-      .map((a) => a.cardmarket.prices.averageSellPrice)
-      .reduce((a, b) => a + b)
-  );
+  const estimateTwo = filteredCards
+    .filter((a) => a.cardmarket.prices.averageSellPrice)
+    .map((a) => a.cardmarket.prices.averageSellPrice);
 
   return (
     <div className="flex flex-col justify-center p-4">
@@ -61,7 +58,11 @@ export default function CardsClient({ allPoke }: Props) {
           {Math.round((filteredCards.length / allPoke.length) * 100)}% Collected
           {`(${filteredCards.length}/${allPoke.length})`}
         </div>
-        <div>Est. Value ${estimateTwo}</div>
+        {estimateTwo.length > 0 ? (
+          <div>
+            Est. Value ${estimateTwo.reduce((a: number, b: number) => a + b)}
+          </div>
+        ) : null}
       </div>
       <SimpleGrid cols={{ base: 4, sm: 8, lg: 15 }}>
         {allPoke
