@@ -191,10 +191,10 @@ function PokemonCards({ pokemon }: { pokemon: Pokemon }) {
   return (
     <Link href={`/pokemon/${pokemon.name}`} className="w-48">
       <Card className={`${pokemon.types[0].type.name}`} withBorder>
-        {pokemon.sprites.front_default ? (
+        {pokemon.sprites.other["official-artwork"].front_default ? (
           <div className="flex flex-row justify-center">
             <Image
-              src={pokemon.sprites.front_default}
+              src={pokemon.sprites.other["official-artwork"].front_default}
               width={100}
               height={100}
               alt="pokemon"

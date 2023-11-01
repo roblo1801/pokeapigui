@@ -26,7 +26,7 @@ export default function ScrollToTopButton() {
 
   return isVisible ? (
     <>
-      <div className="fixed bottom-5 right-5 z-50">
+      <div className="fixed bottom-5 right-5" style={{ zIndex: 999 }}>
         <button
           className="bg-orange-500 border border-black self-center px-[18px] py-[9px] hover:bg-orange-600 rounded"
           onClick={() => scrollTo({ y: 0 })}
