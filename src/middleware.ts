@@ -13,7 +13,7 @@ import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from 'next/server'
 
-const publicRoutes = ['/api/create-user', '/', '/pokemon(.*)', '/sets(.*)', '/signup', '/signin']
+const publicRoutes = ['/api/create-user', '/', '/pokemon(.*)', '/sets(.*)', '/signup(.*)', '/signin']
 // const ignoredRoutes = ['/api/create-user']
 
 const isPublic = (path: string) => {
@@ -43,7 +43,5 @@ if (!userId) {
   });
 
 
-export const config = {
-      matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
-};
+  export const config = { matcher:  '/((?!_next/image|_next/static|favicon.ico).*)',};
  
