@@ -189,7 +189,7 @@ const InfinitePokemon = () => {
 
 function PokemonCards({ pokemon }: { pokemon: Pokemon }) {
   return (
-    <Link href={`/pokemon/${pokemon.name}`} className="w-48">
+    <Link href={`/pokemon/${pokemon.name}`}>
       <Card className={`${pokemon.types[0].type.name}`} withBorder>
         {pokemon.sprites.other["official-artwork"].front_default ? (
           <div className="flex flex-row justify-center">

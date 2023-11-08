@@ -9,7 +9,7 @@
 header h1{
   font-family: 'Pokemon Solid', sans-serif;
   font-display: swap;
-  font-size: xx-large;
+  font-size: x-large;
   color: #feca1b;
   text-shadow:
   3px 3px 0 #3761a8,
@@ -22,7 +22,7 @@ header h1{
 .pokefont {
 	font-family: 'Pokemon Solid', sans-serif;
 	font-display: swap;
-	font-size: xx-large;
+	font-size: x-large;
 	color: #feca1b;
 	text-shadow:
 	3px 3px 0 #3761a8,
