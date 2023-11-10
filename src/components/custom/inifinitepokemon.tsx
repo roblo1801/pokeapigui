@@ -194,12 +194,7 @@ function PokemonCards({ pokemon }: { pokemon: Pokemon }) {
         {pokemon.sprites.other["official-artwork"].front_default ? (
           <div className="flex flex-row justify-center">
             <Image
-              src={pokemon.sprites.other[
-                "official-artwork"
-              ].front_default.substring(
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
-                  .length
-              )}
+              src={pokemon.sprites.other["official-artwork"].front_default}
               width={100}
               height={100}
               alt="pokemon"
