@@ -1,4 +1,3 @@
-import { TCGSet } from "@/types/TCGTypes";
 import SetsClient from "./SetsClient";
 
 export default async function Home() {

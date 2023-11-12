@@ -2,31 +2,24 @@ import { capitalize } from "@/utils/functions/capitalize";
 import type { Metadata } from "next";
 
 type Props = {
-  params: { card: string };
+  params: { set: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cardData = await fetch(
-    `https://api.pokemontcg.io/v2/cards/${params.card}`,
+  const setData = await fetch(
+    `https://api.pokemontcg.io/v2/sets/${params.set}`,
     {
       headers: {
         "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
       },
+      cache: "force-cache",
     }
-  ).then(async (res) => {
-    if (res.status !== 200) {
-      console.log(res.statusText);
-      return "Request Failed";
-    }
-    return await res.json();
-  });
+  ).then(async (res) => await res.json());
+
+  console.log(setData);
 
   return {
-    title:
-      cardData.data.name +
-      " - " +
-      cardData.data.set.name +
-      " | Pokedex Replica",
+    title: setData.data.series + " " + setData.data.name + " | Pokedex Replica",
   };
 }
 

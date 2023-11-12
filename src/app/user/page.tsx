@@ -20,7 +20,7 @@ async function User({}: Props) {
   return (
     <>
       <div className="text-center pokefont">Collections</div>
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-evenly">
         {collections.map((collection) => (
           <Collection endpoint={collection} key={collection.name} />
         ))}
