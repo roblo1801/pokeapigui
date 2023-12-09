@@ -35,7 +35,8 @@
     "swr": "^2.2.4",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.6",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "victory": "^36.7.0"
   },
   "devDependencies": {
     "@types/react-infinite-scroller": "^1.2.3",

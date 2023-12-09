@@ -6,7 +6,8 @@ export type Pokemon = {
                 }
                  home: { front_default: string
                     };
-                      "official-artwork": { front_default: string
+                      "official-artwork": {
+                        front_shiny: string; front_default: string
         ;}}
          front_default: string 
 };

@@ -1,3 +1,4 @@
+import { ShinyProvider } from "@/store/ShinyContext";
 import { capitalize } from "@/utils/functions/capitalize";
 import type { Metadata } from "next";
 
@@ -16,5 +17,5 @@ export default async function PokemonLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <ShinyProvider>{children}</ShinyProvider>;
 }

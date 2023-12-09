@@ -27,12 +27,60 @@ import { Pokemon } from "@/types/PokemonType";
 import { useDisclosure } from "@mantine/hooks";
 import { capitalize } from "@/utils/functions/capitalize";
 
-const fetchPokemons = async (offset: number, limit: number) => {
-  console.log(`getting pokemons ${offset} - ${limit}`);
+interface FiltersState {
+  type: string[];
+  generation: string[];
+  legendary: boolean;
+  hasEvolve: boolean;
+}
 
+const legendaryPokemonIds = [
+  144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 251, 377, 378, 379, 380,
+  381, 382, 383, 384, 385, 386, 480, 481, 482, 483, 484, 485, 486, 487, 488,
+  489, 490, 491, 492, 493, 494, 638, 639, 640, 641, 642, 643, 644, 645, 646,
+  647, 648, 649, 716, 717, 718, 719, 720, 721, 785, 786, 787, 788, 789, 790,
+  791, 792, 793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 805,
+  806, 807, 808, 809, 888, 889, 890, 891, 892, 893, 894, 895, 896, 897, 898,
+  905, 1001, 1002, 1003, 1004, 1007, 1008, 1014, 1015, 1016, 1017,
+];
+
+const generations = [
+  "Gen I",
+  "Gen II",
+  "Gen III",
+  "Gen IV",
+  "Gen V",
+  "Gen VI",
+  "Gen VII",
+  "Gen VIII",
+  "Gen IX",
+];
+
+const types = [
+  "grass",
+  "poison",
+  "fire",
+  "flying",
+  "water",
+  "bug",
+  "normal",
+  "electric",
+  "ground",
+  "fairy",
+  "fighting",
+  "psychic",
+  "rock",
+  "steel",
+  "ice",
+  "ghost",
+  "dragon",
+  "dark",
+];
+
+const fetchPokemons = async (offset: number, limit: number) => {
   const data = await fetch(
     `https://pokeapi.co/api/v2/pokemon?limit=${
-      offset > 900 ? 8 : limit
+      offset > 900 ? 17 : limit
     }&offset=${offset}`
   )
     .then(async (res) => await res.json())
@@ -43,7 +91,6 @@ const fetchPokemons = async (offset: number, limit: number) => {
         )
       )
     );
-  console.log(data[0].id);
   return data;
 };
 
@@ -51,15 +98,14 @@ const pageSize = 100;
 
 const InfinitePokemon = () => {
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FiltersState>({
     type: [],
     generation: [],
-    legendary: [],
-    hasEvolve: [],
+    legendary: false,
+    hasEvolve: false,
   });
 
   const [opened, toggle] = useDisclosure(false);
-  const { pokemon } = useContext(FetchedPokemonContext);
 
   // const slicePokemon = (start: number, end: number) =>
   //   pokemon.slice(start, end);
@@ -77,14 +123,71 @@ const InfinitePokemon = () => {
     },
   });
 
-  const filteredData: Pokemon[][] | undefined = useMemo(
-    () =>
-      data?.pages.map((page: Pokemon[]) =>
-        page.filter((pokemon: Pokemon) =>
+  const filteredData: Pokemon[][] | undefined = data?.pages.map(
+    (page: Pokemon[]) =>
+      page
+        .filter((pokemon: Pokemon) =>
           pokemon.name.includes(query.toLowerCase() || "")
         )
-      ),
-    [data, query]
+        .filter((pokemon) => {
+          const types: string[] = pokemon.types.map(
+            (type: { type: { name: string } }) => type.type.name
+          );
+          console.log(filters.type.length);
+          if (filters.type.length === 0) return true;
+
+          if (filters.type.length > 0) {
+            return types.some((item: string) => filters.type.includes(item));
+          }
+        })
+        .filter((pokemon) => {
+          const gens: number[][] = [
+            [1, 151],
+            [152, 251],
+            [252, 386],
+            [387, 493],
+            [494, 649],
+            [650, 721],
+            [722, 809],
+            [810, 905],
+            [906, 1017],
+          ];
+
+          if (filters.generation.length === 0) return true;
+
+          if (filters.generation.length > 0) {
+            if (
+              generations.some((item: string) =>
+                filters.generation.includes(item)
+              )
+            ) {
+              if (filters.generation.includes("Gen I"))
+                return gens[0][0] <= pokemon.id && pokemon.id <= gens[0][1];
+              if (filters.generation.includes("Gen II"))
+                return gens[1][0] <= pokemon.id && pokemon.id <= gens[1][1];
+              if (filters.generation.includes("Gen III"))
+                return gens[2][0] <= pokemon.id && pokemon.id <= gens[2][1];
+              if (filters.generation.includes("Gen IV"))
+                return gens[3][0] <= pokemon.id && pokemon.id <= gens[3][1];
+              if (filters.generation.includes("Gen V"))
+                return gens[4][0] <= pokemon.id && pokemon.id <= gens[4][1];
+              if (filters.generation.includes("Gen VI"))
+                return gens[5][0] <= pokemon.id && pokemon.id <= gens[5][1];
+              if (filters.generation.includes("Gen VII"))
+                return gens[6][0] <= pokemon.id && pokemon.id <= gens[6][1];
+              if (filters.generation.includes("Gen VIII"))
+                return gens[7][0] <= pokemon.id && pokemon.id <= gens[7][1];
+              if (filters.generation.includes("Gen IX"))
+                return gens[8][0] <= pokemon.id && pokemon.id <= gens[8][1];
+            }
+          }
+        })
+        .filter((pokemon) => {
+          if (filters.legendary) {
+            return legendaryPokemonIds.includes(pokemon.id);
+          }
+          return true;
+        })
   );
 
   if (!data || !filteredData) {
@@ -102,19 +205,12 @@ const InfinitePokemon = () => {
     return <div>Error</div>;
   }
 
-  const types = [
-    ...new Set(
-      filteredData
-        .map((page: Pokemon[]) =>
-          page.map((pokemon: Pokemon) =>
-            pokemon.types.map(
-              (type: { type: { name: string } }) => type.type.name
-            )
-          )
-        )
-        .flat(2)
-    ),
-  ];
+  function toggleLegendary() {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      legendary: !prevFilters.legendary,
+    }));
+  }
 
   return (
     <div className="flex flex-col mx-2 gap-4">
@@ -140,9 +236,33 @@ const InfinitePokemon = () => {
               <Accordion.Control>Types</Accordion.Control>
               <Accordion.Panel>
                 <Group>
-                  {types.map((type, index) => (
-                    <Group key="type">
-                      <Checkbox />
+                  {types.map((type) => (
+                    <Group key={type}>
+                      <Checkbox
+                        checked={filters.type.includes(type)}
+                        onChange={(event) => {
+                          console.log(filters);
+
+                          if (event.currentTarget.checked) {
+                            return setFilters((prevFilters) => ({
+                              ...prevFilters,
+                              type: prevFilters.type.concat(type),
+                            }));
+                          } else if (filters.type.length === 1) {
+                            setFilters((prevFilters) => ({
+                              ...prevFilters,
+                              type: [],
+                            }));
+                          }
+                          return setFilters((prevFilters) => ({
+                            ...prevFilters,
+                            type: prevFilters.type.toSpliced(
+                              prevFilters.type.indexOf(type),
+                              1
+                            ),
+                          }));
+                        }}
+                      />
                       <div className={type.concat(" type")}>
                         {capitalize(type)}
                       </div>
@@ -151,7 +271,49 @@ const InfinitePokemon = () => {
                 </Group>
               </Accordion.Panel>
             </Accordion.Item>
+            <Accordion.Item key={"generations"} value="generations">
+              <Accordion.Control>Generations</Accordion.Control>
+              <Accordion.Panel>
+                <Group>
+                  {generations.map((gen) => (
+                    <Group key={gen}>
+                      <Checkbox
+                        checked={filters.generation.includes(gen)}
+                        onChange={(event) => {
+                          if (event.currentTarget.checked) {
+                            return setFilters((prevFilters) => ({
+                              ...prevFilters,
+                              generation: prevFilters.generation.concat(gen),
+                            }));
+                          } else if (filters.generation.length === 1) {
+                            setFilters((prevFilters) => ({
+                              ...prevFilters,
+                              generation: [],
+                            }));
+                          }
+                          return setFilters((prevFilters) => ({
+                            ...prevFilters,
+                            generation: prevFilters.generation.toSpliced(
+                              prevFilters.generation.indexOf(gen),
+                              1
+                            ),
+                          }));
+                        }}
+                      />
+                      <div>{gen}</div>
+                    </Group>
+                  ))}
+                </Group>
+              </Accordion.Panel>
+            </Accordion.Item>
           </Accordion>
+        </Group>
+        <Group p={8}>
+          <Checkbox
+            checked={filters.legendary === true}
+            onChange={toggleLegendary}
+          />
+          <div>Legendary</div>
         </Group>
       </Drawer>
       <div className="py-2.5">

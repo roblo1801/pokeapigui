@@ -1,10 +1,20 @@
-import { IconComet, IconHandGrab, IconLayoutGrid } from "@tabler/icons-react";
+import {
+  IconComet,
+  IconHandGrab,
+  IconLayoutGrid,
+  IconMap,
+} from "@tabler/icons-react";
 import {
   capitalize,
   decimetersToFeetAndInches,
   hectogramsToLbs,
 } from "@/utils/functions/capitalize";
 import dynamic from "next/dynamic";
+import { Button, Stack } from "@mantine/core";
+import { shiny } from "@/signals/shiny";
+import ShinyButton from "@/components/custom/ShinyButton";
+import { ShinyProvider } from "@/store/ShinyContext";
+import Stats from "@/components/custom/Stats";
 
 const DynamicPokemonType = dynamic(
   () => import("@/components/custom/pokemontype"),
@@ -43,6 +53,7 @@ const DynamicImage = dynamic(() => import("./PokemonImage"), { ssr: false });
 
 async function PokemonInfo({ params }: { params: { pokemon: string } }) {
   const { pokemon } = params;
+
   const pokemonData = await fetch(
     `https://pokeapi.co/api/v2/pokemon/${pokemon}`
   ).then(async (res) => {
@@ -65,6 +76,13 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
     return data;
   });
 
+  const pokemonLocationData = await fetch(
+    `https://pokeapi.co/api/v2/pokemon/${pokemonData.id}/encounters`
+  ).then(async (res) => {
+    const data = await res.json();
+    return data;
+  });
+
   const pokemonEvolutionChainData = await fetch(
     pokemonSpeciesData.evolution_chain.url
   ).then(async (res) => {
@@ -77,9 +95,11 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
       <div className="absolute top-2.5 right-2.5 font-bold text-2xl">
         #{pokemonData.id}
       </div>
-      <h2 className="font-bold text-3xl">
-        {pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)}
-      </h2>
+
+      <Stack align="flex-start">
+        <h2 className="font-bold text-3xl">{capitalize(pokemonData.name)}</h2>
+        <ShinyButton />
+      </Stack>
       <DynamicImage pokemonData={pokemonData} />
 
       <DynamicAddToPokemonButton pokemon={pokemonData} />
@@ -129,7 +149,39 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
             ),
           },
           {
-            key: "Moves",
+            key: "Locations",
+            label: "Locations",
+            extra: <IconMap />,
+            children: pokemonLocationData.map(
+              (location: {
+                location_area: { name: string; url: string };
+                version_details: {
+                  encounter_details: {
+                    chance: number;
+                    condition_values: { name: string; url: string }[];
+                  };
+                  max_chance: number;
+                  version: { name: string; url: string };
+                }[];
+              }) => (
+                <div
+                  key={location.location_area.name}
+                  className="flex gap-1 text-2xl"
+                >
+                  {location.location_area.name
+                    .split("-")
+                    .map((x) => capitalize(x))
+                    .join(" ")}{" "}
+                  -{" "}
+                  {location.version_details
+                    .map((version) => capitalize(version.version.name))
+                    .join("/")}
+                </div>
+              )
+            ),
+          },
+          {
+            key: "Games",
             label: "Moves",
             extra: <IconLayoutGrid />,
             children: pokemonData.moves.map(
@@ -172,7 +224,16 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
           },
         ]}
       />
-
+      <Stats
+        stats={pokemonData.stats.map(
+          (stat: { stat: { name: string }; base_stat: number }) => {
+            return {
+              name: stat.stat.name,
+              value: stat.base_stat,
+            };
+          }
+        )}
+      />
       {pokemonEvolutionChainData.chain.evolves_to.length > 0 ? (
         <>
           <h2>Evolution Chain</h2>
