@@ -256,7 +256,7 @@ const InfinitePokemon = () => {
                           }
                           return setFilters((prevFilters) => ({
                             ...prevFilters,
-                            type: prevFilters.type.toSpliced(
+                            type: prevFilters.type.splice(
                               prevFilters.type.indexOf(type),
                               1
                             ),
@@ -293,7 +293,7 @@ const InfinitePokemon = () => {
                           }
                           return setFilters((prevFilters) => ({
                             ...prevFilters,
-                            generation: prevFilters.generation.toSpliced(
+                            generation: prevFilters.generation.splice(
                               prevFilters.generation.indexOf(gen),
                               1
                             ),
