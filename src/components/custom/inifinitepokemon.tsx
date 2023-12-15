@@ -8,6 +8,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import {
   Accordion,
+  ActionIcon,
   Button,
   Card,
   Center,
@@ -21,11 +22,17 @@ import {
 import Link from "next/link";
 import PokemonType from "./pokemontype";
 import Image from "next/image";
-import { useContext, useMemo, useState } from "react";
-import { FetchedPokemonContext } from "@/store/FetchedPokemonProvider";
+import { useState } from "react";
 import { Pokemon } from "@/types/PokemonType";
 import { useDisclosure } from "@mantine/hooks";
 import { capitalize } from "@/utils/functions/capitalize";
+import {
+  IconSortAscending,
+  IconSortDescending,
+  IconStar,
+} from "@tabler/icons-react";
+import SortMenu from "./SortMenu";
+import GlowingButton from "./GameButton";
 
 interface FiltersState {
   type: string[];
@@ -98,6 +105,8 @@ const pageSize = 100;
 
 const InfinitePokemon = () => {
   const [query, setQuery] = useState("");
+  const [sortStat, setSortStat] = useState("");
+  const [sortDesc, setSortDesc] = useState(false);
   const [filters, setFilters] = useState<FiltersState>({
     type: [],
     generation: [],
@@ -222,7 +231,62 @@ const InfinitePokemon = () => {
           }
           style={{ flex: "2" }}
         />
-        <Button onClick={toggle.toggle}>Filter</Button>
+        <SortMenu setSortStat={setSortStat}>
+          <Button
+            style={{
+              background: "lightblue",
+              border: "1px solid black",
+              color: "black",
+            }}
+          >
+            Sort
+          </Button>
+        </SortMenu>
+        <ActionIcon
+          size="lg"
+          style={{
+            background: sortDesc ? "green" : "red",
+            border: "1px solid black",
+          }}
+          onClick={() => setSortDesc(!sortDesc)}
+        >
+          {sortDesc ? <IconSortAscending /> : <IconSortDescending />}
+        </ActionIcon>
+      </Group>
+      <Group gap={10}>
+        <Button
+          style={{
+            background: !filters.legendary
+              ? "purple"
+              : `
+            repeating-linear-gradient(
+              45deg,
+              #000,
+              #000 10px,
+              #fff 10px,
+              #fff 20px
+            )
+          `,
+
+            border: "1px solid black",
+          }}
+          onClick={toggleLegendary}
+        >
+          Legendary{" "}
+          <IconStar
+            style={{
+              fill: "gold",
+            }}
+          />
+        </Button>
+        <Button
+          style={{
+            background: "black",
+          }}
+          onClick={toggle.toggle}
+        >
+          Filter
+        </Button>
       </Group>
       <Drawer
         position="bottom"
@@ -237,7 +301,7 @@ const InfinitePokemon = () => {
               <Accordion.Panel>
                 <Group>
                   {types.map((type) => (
-                    <Group key={type}>
+                    <Group key={type} pr={10} gap={4}>
                       <Checkbox
                         checked={filters.type.includes(type)}
                         onChange={(event) => {
@@ -276,7 +340,7 @@ const InfinitePokemon = () => {
               <Accordion.Panel>
                 <Group>
                   {generations.map((gen) => (
-                    <Group key={gen}>
+                    <Group key={gen} pr={10} gap={4}>
                       <Checkbox
                         checked={filters.generation.includes(gen)}
                         onChange={(event) => {
@@ -308,13 +372,6 @@ const InfinitePokemon = () => {
             </Accordion.Item>
           </Accordion>
         </Group>
-        <Group p={8}>
-          <Checkbox
-            checked={filters.legendary === true}
-            onChange={toggleLegendary}
-          />
-          <div>Legendary</div>
-        </Group>
       </Drawer>
       <div className="py-2.5">
         <InfiniteScroll
@@ -336,11 +393,23 @@ const InfinitePokemon = () => {
         >
           <div className="flex justify-center w-full">
             <div className="grid  mb-10 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-2">
-              {filteredData.map((page: Pokemon[]) =>
-                page.map((pokemon: Pokemon, index) => (
+              {filteredData
+                .flat(1)
+                .sort((a, b) => {
+                  const statA =
+                    a.stats.find((stat) => stat.stat.name === sortStat)
+                      ?.base_stat || 0;
+                  const statB =
+                    b.stats.find((stat) => stat.stat.name === sortStat)
+                      ?.base_stat || 0;
+
+                  if (sortDesc) return statB - statA;
+
+                  return statA - statB;
+                })
+                .map((pokemon: Pokemon, index) => (
                   <PokemonCards pokemon={pokemon} key={pokemon.name + index} />
-                ))
-              )}
+                ))}
             </div>
           </div>
         </InfiniteScroll>

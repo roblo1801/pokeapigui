@@ -1,3 +1,15 @@
+export type VersionGroupDetails =  {
+       
+  level_learned_at?: number;
+  move_learn_method: { name: string; url: string };
+  version_group: { name: string; url: string };
+}[]
+
+export type PokemonMove = {
+   version_group_details: VersionGroupDetails;
+move: { name: string };
+}
+
 export type Pokemon = {
     name: string;
     sprites: {
@@ -18,7 +30,7 @@ export type Pokemon = {
     base_experience: number;
     abilities: { ability: { name: string } }[];
     stats: { base_stat: number; stat: { name: string } }[];
-    moves: { move: { name: string } }[];
+    moves: PokemonMove[];
     species: { name: string };
     game_indices: { game_index: number; version: { name: string } }[];
     held_items: { item: { name: string } }[];
@@ -26,3 +38,5 @@ export type Pokemon = {
     is_default: boolean;
     forms: { name: string }[];
   }
+
+ 

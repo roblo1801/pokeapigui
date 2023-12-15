@@ -2,13 +2,7 @@
 
 import { Flex } from "@mantine/core";
 import React from "react";
-import {
-  VictoryAxis,
-  VictoryBar,
-  VictoryChart,
-  VictoryLabel,
-  VictoryTheme,
-} from "victory";
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from "victory";
 
 type Props = {
   stats: {
@@ -21,7 +15,7 @@ const colors = ["red", "orange", "yellow", "blue", "green", "pink"];
 
 function Stats({ stats }: Props) {
   return (
-    <Flex m={0} p={0}>
+    <Flex m="auto" p={0} h={200}>
       <VictoryChart height={200}>
         <VictoryAxis
           tickValues={stats.map((stat) => stat.value)}
@@ -36,7 +30,7 @@ function Stats({ stats }: Props) {
           y="value"
           style={{
             data: {
-              fill: ({ index }) => {
+              fill: ({ index }: { index: number }) => {
                 const i: number = index as number;
                 return colors[i];
               },

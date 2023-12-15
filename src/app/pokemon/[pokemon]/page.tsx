@@ -10,11 +10,12 @@ import {
   hectogramsToLbs,
 } from "@/utils/functions/capitalize";
 import dynamic from "next/dynamic";
-import { Button, Stack } from "@mantine/core";
-import { shiny } from "@/signals/shiny";
+import { Stack, Table } from "@mantine/core";
+
 import ShinyButton from "@/components/custom/ShinyButton";
-import { ShinyProvider } from "@/store/ShinyContext";
 import Stats from "@/components/custom/Stats";
+import { Pokemon, PokemonMove, VersionGroupDetails } from "@/types/PokemonType";
+import LearnedMoves from "@/components/custom/LearnedMoves";
 
 const DynamicPokemonType = dynamic(
   () => import("@/components/custom/pokemontype"),
@@ -181,46 +182,48 @@ async function PokemonInfo({ params }: { params: { pokemon: string } }) {
             ),
           },
           {
-            key: "Games",
-            label: "Moves",
+            key: "Learned Moves",
+            label: "Learned Moves",
             extra: <IconLayoutGrid />,
-            children: pokemonData.moves.map(
-              (move: {
-                version_group_details: {
-                  level_learned_at: number;
-                  move_learn_method: { name: string; url: string };
-                  version_group: { name: string; url: string };
-                }[];
-                move: { name: string };
-              }) => (
-                <div key={move.move.name} className="flex gap-1 text-2xl">
-                  {capitalize(move.move.name)}{" "}
-                  {move.version_group_details.find(
-                    (e) =>
-                      e.version_group.name ===
-                        "brilliant-diamond-and-shining-pearl" &&
-                      e.move_learn_method
-                  ) ? (
-                    move.version_group_details.find(
-                      (e) =>
-                        e.version_group.name ===
-                        "brilliant-diamond-and-shining-pearl"
-                    )?.move_learn_method.name === "level-up" ? (
-                      <DynamicBadge radius="sm">
-                        Lv{" "}
-                        {
-                          move.version_group_details.find(
-                            (e) =>
-                              e.version_group.name ===
-                              "brilliant-diamond-and-shining-pearl"
-                          )?.level_learned_at
-                        }
-                      </DynamicBadge>
-                    ) : null
-                  ) : null}
-                </div>
-              )
+            children: (
+              <LearnedMoves
+                moves={pokemonData.moves
+                  .filter((move: PokemonMove) =>
+                    move.version_group_details.some((e) => e.level_learned_at)
+                  )
+                  .filter((move: PokemonMove) => {
+                    if (move.version_group_details[0].level_learned_at)
+                      return move.version_group_details[0].level_learned_at > 0;
+                  })
+                  .sort((a: PokemonMove, b: PokemonMove) => {
+                    const aLevelLearnt =
+                      a.version_group_details[0].level_learned_at || 0;
+                    const bLevelLearnt =
+                      b.version_group_details[0].level_learned_at || 0;
+
+                    return aLevelLearnt - bLevelLearnt;
+                  })}
+              />
             ),
+          },
+          {
+            key: "Teachable Moves",
+            label: "Teachable Moves",
+            extra: <IconLayoutGrid />,
+            children: pokemonData.moves
+              .filter((move: PokemonMove) =>
+                move.version_group_details.some(
+                  (e) => e.move_learn_method.name === "machine"
+                )
+              )
+              .map((move: PokemonMove) => (
+                <div key={move.move.name} className="flex gap-1 text-2xl">
+                  {move.move.name
+                    .split("-")
+                    .map((e) => capitalize(e))
+                    .join(" ")}
+                </div>
+              )),
           },
         ]}
       />
