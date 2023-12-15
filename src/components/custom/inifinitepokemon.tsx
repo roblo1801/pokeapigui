@@ -32,7 +32,6 @@ import {
   IconStar,
 } from "@tabler/icons-react";
 import SortMenu from "./SortMenu";
-import GlowingButton from "./GameButton";
 
 interface FiltersState {
   type: string[];
