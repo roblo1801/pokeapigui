@@ -1,8 +1,16 @@
 "use client";
 
 import { Flex } from "@mantine/core";
+import { parse } from "path";
 import React from "react";
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from "victory";
+import {
+  StringOrNumberOrCallback,
+  VictoryAnimation,
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLabel,
+} from "victory";
 
 type Props = {
   stats: {
@@ -30,9 +38,11 @@ function Stats({ stats }: Props) {
           y="value"
           style={{
             data: {
-              fill: ({ index }: { index: number }) => {
-                const i: number = index as number;
-                return colors[i];
+              fill: (BarObject) => {
+                const i = BarObject.index;
+                if (typeof i === "number") return colors[i];
+                if (typeof i === "string") return colors[parseInt(i)];
+                return "#000";
               },
               stroke: "#000",
               strokeWidth: 2,
