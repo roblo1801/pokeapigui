@@ -34,8 +34,8 @@ import {
 import SortMenu from "./SortMenu";
 
 interface FiltersState {
-  type: string[];
-  generation: string[];
+  type: string[] | null;
+  generation: string[] | null;
   legendary: boolean;
   hasEvolve: boolean;
 }
@@ -107,8 +107,8 @@ const InfinitePokemon = () => {
   const [sortStat, setSortStat] = useState("");
   const [sortDesc, setSortDesc] = useState(false);
   const [filters, setFilters] = useState<FiltersState>({
-    type: [],
-    generation: [],
+    type: null,
+    generation: null,
     legendary: false,
     hasEvolve: false,
   });
@@ -141,12 +141,10 @@ const InfinitePokemon = () => {
           const types: string[] = pokemon.types.map(
             (type: { type: { name: string } }) => type.type.name
           );
-          console.log(filters.type.length);
-          if (filters.type.length === 0) return true;
+          if (!filters.type || filters.type.length === 0) return true;
 
-          if (filters.type.length > 0) {
-            return types.some((item: string) => filters.type.includes(item));
-          }
+          if (filters.type)
+            return types.some((item: string) => filters.type?.includes(item));
         })
         .filter((pokemon) => {
           const gens: number[][] = [
@@ -161,12 +159,12 @@ const InfinitePokemon = () => {
             [906, 1017],
           ];
 
-          if (filters.generation.length === 0) return true;
+          if (!filters.generation) return true;
 
           if (filters.generation.length > 0) {
             if (
               generations.some((item: string) =>
-                filters.generation.includes(item)
+                filters.generation?.includes(item)
               )
             ) {
               if (filters.generation.includes("Gen I"))
@@ -302,28 +300,24 @@ const InfinitePokemon = () => {
                   {types.map((type) => (
                     <Group key={type} pr={10} gap={4}>
                       <Checkbox
-                        checked={filters.type.includes(type)}
+                        checked={filters.type?.includes(type)}
                         onChange={(event) => {
-                          console.log(filters);
-
                           if (event.currentTarget.checked) {
                             return setFilters((prevFilters) => ({
                               ...prevFilters,
-                              type: prevFilters.type.concat(type),
-                            }));
-                          } else if (filters.type.length === 1) {
-                            setFilters((prevFilters) => ({
-                              ...prevFilters,
-                              type: [],
+                              type: prevFilters.type
+                                ? prevFilters.type.concat(type)
+                                : [type],
                             }));
                           }
-                          return setFilters((prevFilters) => ({
-                            ...prevFilters,
-                            type: prevFilters.type.splice(
-                              prevFilters.type.indexOf(type),
-                              1
-                            ),
-                          }));
+                          if (filters.type?.includes(type)) {
+                            const indexOfType = filters.type.indexOf(type);
+                            filters.type.splice(indexOfType, 1);
+                            return setFilters((prevFilters) => ({
+                              ...prevFilters,
+                              type: filters.type,
+                            }));
+                          }
                         }}
                       />
                       <div className={type.concat(" type")}>
@@ -341,26 +335,24 @@ const InfinitePokemon = () => {
                   {generations.map((gen) => (
                     <Group key={gen} pr={10} gap={4}>
                       <Checkbox
-                        checked={filters.generation.includes(gen)}
+                        checked={filters.generation?.includes(gen)}
                         onChange={(event) => {
                           if (event.currentTarget.checked) {
                             return setFilters((prevFilters) => ({
                               ...prevFilters,
-                              generation: prevFilters.generation.concat(gen),
-                            }));
-                          } else if (filters.generation.length === 1) {
-                            setFilters((prevFilters) => ({
-                              ...prevFilters,
-                              generation: [],
+                              generation: prevFilters.generation
+                                ? prevFilters.generation.concat(gen)
+                                : [gen],
                             }));
                           }
-                          return setFilters((prevFilters) => ({
-                            ...prevFilters,
-                            generation: prevFilters.generation.splice(
-                              prevFilters.generation.indexOf(gen),
-                              1
-                            ),
-                          }));
+                          if (filters.generation?.includes(gen)) {
+                            const indexOfgen = filters.generation.indexOf(gen);
+                            filters.generation.splice(indexOfgen, 1);
+                            return setFilters((prevFilters) => ({
+                              ...prevFilters,
+                              gen: filters.generation,
+                            }));
+                          }
                         }}
                       />
                       <div>{gen}</div>

@@ -16,8 +16,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   ).then(async (res) => await res.json());
 
-  console.log(setData);
-
   return {
     title: setData.data.series + " " + setData.data.name + " | Pokedex Replica",
   };

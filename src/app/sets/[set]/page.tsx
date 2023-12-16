@@ -21,13 +21,15 @@ export default async function Home({ params }: Props) {
 
   return (
     <>
-      <Image
-        src={cardData.data[0].set.images.logo}
-        alt="Set Logo"
-        width={200}
-        height={200}
-        className="mx-auto"
-      />
+      {cardData.data[0].set ? (
+        <Image
+          src={cardData.data[0].set.images.logo}
+          alt="Set Logo"
+          width={200}
+          height={200}
+          className="mx-auto"
+        />
+      ) : null}
       <h1 className="text-center text-2xl">
         {cardData.data[0].set.series} - {cardData.data[0].set.name}
       </h1>
