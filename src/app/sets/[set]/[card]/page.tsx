@@ -7,51 +7,26 @@ type Props = {
 };
 
 export default async function Home({ params }: Props) {
-  const cardData = await fetch(
-    `https://api.pokemontcg.io/v2/cards/${params.card}`,
-    {
-      headers: {
-        "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
-      },
-    }
-  ).then(async (res) => {
-    if (res.status !== 200) {
-      console.log(res.statusText);
-      return "Request Failed";
-    }
-    return await res.json();
-  });
+  // Import local TCG data utilities
+  const { getTCGCard, getTCGCardsFromSet } = await import('@/utils/tcgDataLoader');
+  const cardData = await getTCGCard(params.card);
 
-  if (cardData === "Request Failed") return <button>Go Back</button>;
+  if (!cardData || !cardData.data) return <button>Go Back</button>;
 
-  const nextCardData = await fetch(
-    `https://api.pokemontcg.io/v2/cards?q=set.id:${
-      cardData.data.set.id
-    } number:${parseInt(cardData.data.number) + 1}`,
-    {
-      headers: {
-        "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
-      },
-    }
-  ).then(async (res) => await res.json());
-
-  const prevCardData = await fetch(
-    `https://api.pokemontcg.io/v2/cards?q=set.id:${
-      cardData.data.set.id
-    } number:${parseInt(cardData.data.number) - 1}`,
-    {
-      headers: {
-        "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
-      },
-    }
-  ).then(async (res) => await res.json());
+  // Get all cards from the same set to find next/prev
+  const allCardsInSet = await getTCGCardsFromSet(cardData.data.set.id);
+  const sortedCards = allCardsInSet.data.sort((a: any, b: any) => parseInt(a.number) - parseInt(b.number));
+  
+  const currentIndex = sortedCards.findIndex((card: any) => card.id === params.card);
+  const nextCardData = currentIndex < sortedCards.length - 1 ? sortedCards[currentIndex + 1] : null;
+  const prevCardData = currentIndex > 0 ? sortedCards[currentIndex - 1] : null;
 
   return (
     <>
       <SetsClient
-        prevCardData={prevCardData.data[0]}
+        prevCardData={prevCardData}
         cardData={cardData.data}
-        nextCardData={nextCardData.data[0]}
+        nextCardData={nextCardData}
       />
     </>
   );

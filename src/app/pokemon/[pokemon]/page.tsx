@@ -55,41 +55,21 @@ const DynamicImage = dynamic(() => import("./PokemonImage"), { ssr: false });
 async function PokemonInfo({ params }: { params: { pokemon: string } }) {
   const { pokemon } = params;
 
-  const pokemonData = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/${pokemon}`
-  ).then(async (res) => {
-    if (res.status === 404) {
-      return null;
-    }
+  // Import local data utilities
+  const { getPokemon, getPokemonSpecies, getPokemonEncounters, getEvolutionChain } = await import('@/utils/dataLoader');
 
-    const data = await res.json();
-
-    return data;
-  });
+  const pokemonData = await getPokemon(pokemon);
 
   if (!pokemonData)
     return <div className="flex items-center">No Pokemon Found</div>;
 
-  const pokemonSpeciesData = await fetch(
-    `https://pokeapi.co/api/v2/pokemon-species/${pokemonData.species.name}`
-  ).then(async (res) => {
-    const data = await res.json();
-    return data;
-  });
+  const pokemonSpeciesData = await getPokemonSpecies(pokemonData.species?.name || pokemonData.name);
 
-  const pokemonLocationData = await fetch(
-    `https://pokeapi.co/api/v2/pokemon/${pokemonData.id}/encounters`
-  ).then(async (res) => {
-    const data = await res.json();
-    return data;
-  });
+  const pokemonLocationData = await getPokemonEncounters(pokemonData.id);
 
-  const pokemonEvolutionChainData = await fetch(
-    pokemonSpeciesData.evolution_chain.url
-  ).then(async (res) => {
-    const data = await res.json();
-    return data;
-  });
+  const pokemonEvolutionChainData = await getEvolutionChain(
+    pokemonSpeciesData.evolution_chain?.url || ''
+  );
 
   return (
     <div className="relative p-2.5 pb-10">

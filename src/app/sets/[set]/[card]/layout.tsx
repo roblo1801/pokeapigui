@@ -6,20 +6,15 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cardData = await fetch(
-    `https://api.pokemontcg.io/v2/cards/${params.card}`,
-    {
-      headers: {
-        "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
-      },
-    }
-  ).then(async (res) => {
-    if (res.status !== 200) {
-      console.log(res.statusText);
-      return "Request Failed";
-    }
-    return await res.json();
-  });
+  // Import local TCG data utilities
+  const { getTCGCard } = await import('@/utils/tcgDataLoader');
+  const cardData = await getTCGCard(params.card);
+
+  if (!cardData || !cardData.data) {
+    return {
+      title: "Card Not Found | Pokedex Replica",
+    };
+  }
 
   return {
     title:

@@ -5,15 +5,9 @@ import Link from "next/link";
 import { capitalize } from "@/utils/functions/capitalize";
 
 async function PokemonEvolve({ name }: { name: string }) {
-  const evolve = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`).then(
-    async (res) => {
-      if (res.status === 404) {
-        return null;
-      }
-
-      return await res.json();
-    }
-  );
+  // Import local data utilities
+  const { getPokemon } = await import('@/utils/dataLoader');
+  const evolve = await getPokemon(name);
 
   return evolve ? (
     <Link

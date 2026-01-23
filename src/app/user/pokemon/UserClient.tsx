@@ -24,13 +24,10 @@ function UserClient({}: Props) {
     });
     if (!data || !data[0].pokemon) return [];
 
+    // Import local data utilities
+    const { getPokemon } = await import('@/utils/dataLoader');
     const allPoke = await Promise.all(
-      data[0].pokemon.map(
-        async (e: string) =>
-          await fetch(`https://pokeapi.co/api/v2/pokemon/${e}`).then(
-            async (res) => await res.json()
-          )
-      )
+      data[0].pokemon.map(async (e: string) => await getPokemon(e))
     );
 
     return allPoke;

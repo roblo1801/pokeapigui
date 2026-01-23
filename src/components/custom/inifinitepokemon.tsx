@@ -84,19 +84,9 @@ const types = [
 ];
 
 const fetchPokemons = async (offset: number, limit: number) => {
-  const data = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=${
-      offset > 900 ? 17 : limit
-    }&offset=${offset}`
-  )
-    .then(async (res) => await res.json())
-    .then((res: { results: { name: string; url: string }[] }) =>
-      Promise.all(
-        res.results.map(
-          async (e) => await fetch(e.url).then(async (res) => await res.json())
-        )
-      )
-    );
+  // Import local pokemon data
+  const { getPokemonList } = await import('@/utils/dataLoader');
+  const data = await getPokemonList(limit, offset);
   return data;
 };
 

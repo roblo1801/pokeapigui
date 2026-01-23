@@ -9,15 +9,9 @@ type Props = {
 };
 
 export default async function Home({ params }: Props) {
-  const cardData = await fetch(
-    `https://api.pokemontcg.io/v2/cards?q=!set.id:${params.set}`,
-    {
-      headers: {
-        "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
-      },
-      cache: "force-cache",
-    }
-  ).then(async (res) => await res.json());
+  // Import local TCG data utilities
+  const { getTCGCardsFromSet } = await import('@/utils/tcgDataLoader');
+  const cardData = await getTCGCardsFromSet(params.set);
 
   return (
     <>

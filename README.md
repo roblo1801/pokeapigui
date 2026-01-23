@@ -1,8 +1,23 @@
+# Pokedex GUI
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Features
+
+- Browse Pokemon data from PokeAPI
+- View Pokemon TCG cards
+- Local data support: Download and use data locally instead of making API calls
+- User authentication and collections
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -17,6 +32,41 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Using Local Data
+
+By default, the application fetches data from external APIs (PokeAPI and Pokemon TCG API). You can download the data locally to improve performance and reduce API calls.
+
+### Download Data
+
+Run the Python script to download all Pokemon and TCG data:
+
+```bash
+# Download all data (Pokemon + TCG)
+python3 scripts/download_data.py
+
+# Download only Pokemon data
+python3 scripts/download_data.py pokemon
+
+# Download only TCG data
+python3 scripts/download_data.py tcg
+```
+
+The script will create the following files in `src/data/`:
+- `pokemon_full.json` - Complete Pokemon data
+- `pokemon_species.json` - Species information
+- `evolution_chains.json` - Evolution chain data
+- `tcg_sets.json` - Pokemon TCG card sets
+- `tcg_cards.json` - Pokemon TCG cards
+
+**Note:** The full download can take 20-30 minutes depending on your internet connection.
+
+### How It Works
+
+- The application automatically detects if local data files exist
+- If local data is available, it uses that instead of making API calls
+- If local data is not available, it falls back to the external APIs
+- This provides flexibility and improves performance when local data is present
 
 ## Learn More
 
