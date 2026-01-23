@@ -1,8 +1,5 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
-import { Card, Text } from "@mantine/core";
 import Image from "next/image";
 
 export default function Endpoint({
@@ -17,8 +14,8 @@ export default function Endpoint({
 }) {
   return (
     <Link href={`/${endpoint.link}`}>
-      <Card shadow="lg" padding="lg" radius="md" bg="dark" withBorder>
-        <Card.Section withBorder mah={150} style={{ overflow: "hidden" }}>
+      <div className="flex justify-center flex-col items-center bg-black rounded-xl shadow-lg p-4">
+        <div className="max-h-[125px] p-1 overflow-hidden">
           <Image
             src={endpoint.url}
             alt={endpoint.name}
@@ -26,17 +23,11 @@ export default function Endpoint({
             height={150}
             priority={true}
           />
-        </Card.Section>
-        <Text
-          variant="gradient"
-          ta="center"
-          tt="uppercase"
-          gradient={{ from: "white", to: "gold" }}
-          className="flex self-center justify-center align-middle items-center"
-        >
+        </div>
+        <h1 className="text-xl border-t border-yellow-500 w-full text-white font-bold">
           {endpoint.name}
-        </Text>
-      </Card>
+        </h1>
+      </div>
     </Link>
   );
 }

@@ -1,16 +1,9 @@
 "use client";
 
 import { Flex } from "@mantine/core";
-import { parse } from "path";
+
 import React from "react";
-import {
-  StringOrNumberOrCallback,
-  VictoryAnimation,
-  VictoryAxis,
-  VictoryBar,
-  VictoryChart,
-  VictoryLabel,
-} from "victory";
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel } from "victory";
 
 type Props = {
   stats: {
