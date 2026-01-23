@@ -6,15 +6,9 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const setData = await fetch(
-    `https://api.pokemontcg.io/v2/sets/${params.set}`,
-    {
-      headers: {
-        "X-Api-Key": "35688f31-3b82-46e8-88e9-c0775c640cd8",
-      },
-      cache: "force-cache",
-    }
-  ).then(async (res) => await res.json());
+  // Import local TCG data utilities
+  const { getTCGSet } = await import('@/utils/tcgDataLoader');
+  const setData = await getTCGSet(params.set);
 
   return {
     title: setData.data.series + " " + setData.data.name + " | Pokedex Replica",

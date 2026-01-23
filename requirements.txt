@@ -1,0 +1,2 @@
+# Python dependencies for data download script
+# No external dependencies required - uses only Python standard library
