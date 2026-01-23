@@ -29,8 +29,8 @@ function initializePokemonCache() {
     pokemonCache = new Map();
     pokemonByIdCache = new Map();
     
-    // @ts-ignore - pokemon.json has simple structure
-    pokemonFullData.forEach((pokemon: PokemonData) => {
+    const pokemonArray = pokemonFullData as PokemonData[];
+    pokemonArray.forEach((pokemon: PokemonData) => {
       // Convert simplified format to full PokeAPI format
       const fullPokemon = convertToFullFormat(pokemon);
       pokemonCache!.set(pokemon.name.toLowerCase(), fullPokemon);
@@ -104,8 +104,7 @@ export async function getPokemonList(
 ): Promise<any[]> {
   initializePokemonCache();
   
-  // @ts-ignore
-  const allPokemon = Array.from(pokemonByIdCache!.values());
+  const allPokemon = Array.from(pokemonByIdCache!.values()) as any[];
   return allPokemon.slice(offset, offset + limit);
 }
 
@@ -114,8 +113,7 @@ export async function getPokemonList(
  */
 export async function getAllPokemon(): Promise<any[]> {
   initializePokemonCache();
-  // @ts-ignore
-  return Array.from(pokemonByIdCache!.values());
+  return Array.from(pokemonByIdCache!.values()) as any[];
 }
 
 /**

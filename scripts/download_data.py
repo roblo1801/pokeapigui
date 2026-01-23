@@ -147,7 +147,8 @@ def download_pokemon_tcg_data():
                 all_cards.extend(cards_data["data"])
                 
                 # Check if there are more pages
-                if page >= cards_data.get("totalCount", 0) / 250:
+                total_count = cards_data.get("totalCount", 0)
+                if page * 250 >= total_count:
                     break
                     
                 page += 1

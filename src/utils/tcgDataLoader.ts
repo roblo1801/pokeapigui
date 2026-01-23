@@ -92,7 +92,7 @@ export async function getTCGCardsFromSet(setId: string): Promise<any> {
   
   // Otherwise, fall back to API
   const response = await fetch(
-    `https://api.pokemontcg.io/v2/cards?q=!set.id:${setId}`,
+    `https://api.pokemontcg.io/v2/cards?q=set.id:${setId}`,
     {
       headers: {
         'X-Api-Key': POKEMON_TCG_API_KEY,
