@@ -10,11 +10,11 @@ import {
   hectogramsToLbs,
 } from "@/utils/functions/capitalize";
 import dynamic from "next/dynamic";
-import { Stack, Table } from "@mantine/core";
+import { Stack } from "@mantine/core";
 
 import ShinyButton from "@/components/custom/ShinyButton";
 import Stats from "@/components/custom/Stats";
-import { Pokemon, PokemonMove, VersionGroupDetails } from "@/types/PokemonType";
+import { PokemonMove } from "@/types/PokemonType";
 import LearnedMoves from "@/components/custom/LearnedMoves";
 
 const DynamicPokemonType = dynamic(
@@ -47,8 +47,6 @@ const DynamicPokemonEvolve = dynamic(
     loading: () => <div>Loading...</div>,
   }
 );
-
-const DynamicBadge = dynamic(() => import("./Badged"), { ssr: false });
 
 const DynamicImage = dynamic(() => import("./PokemonImage"), { ssr: false });
 

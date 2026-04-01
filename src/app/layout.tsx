@@ -54,7 +54,7 @@ export default async function RootLayout({
             }}
           >
             <header className="w-full flex flex-row justify-between px-4 pt-2 bg-red-500">
-              <h1>
+              <h1 className="-rotate-12 transform-gpu">
                 <Link href="/">Pokedex Replica</Link>
               </h1>
               <Account />

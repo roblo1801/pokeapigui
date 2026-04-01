@@ -8,6 +8,7 @@ import {
   Checkbox,
   Drawer,
   Group,
+  Indicator,
   Loader,
   TextInput,
 } from "@mantine/core";
@@ -211,6 +212,8 @@ function SetsClient({ cardData }: Props) {
               padding: "20px",
               width: "300px" /* Adjust the width as needed */,
               margin: "20px",
+              color: "white",
+              textShadow: "1px 1px #000",
             },
             item: {
               background: "transparent",
@@ -223,11 +226,25 @@ function SetsClient({ cardData }: Props) {
               padding: "5px",
               textTransform: "uppercase",
               fontSize: "1.2rem",
+              color: "white",
+              textShadow: "1px 1px #000",
             },
           }}
         >
           <Accordion.Item key={"supertype"} value="supertype" c="light">
-            <Accordion.Control>Supertype</Accordion.Control>
+            <Accordion.Control>
+              <div className="p-2">
+                <Indicator
+                  size={20}
+                  position="bottom-start"
+                  zIndex={99}
+                  label={filters.supertype.length}
+                  disabled={filters.supertype.length < 1}
+                >
+                  <div>Supertype</div>
+                </Indicator>
+              </div>
+            </Accordion.Control>
             <Accordion.Panel>
               <Group>
                 {supertypes.map((supertype) => (

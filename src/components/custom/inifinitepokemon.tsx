@@ -280,79 +280,123 @@ const InfinitePokemon = () => {
         opened={opened}
         onClose={toggle.close}
         title="Filter"
+        styles={{
+          header: {
+            background: "#000",
+            color: "white",
+            margin: "auto",
+          },
+          title: {
+            display: "flex",
+
+            margin: "auto",
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+          },
+
+          content: {
+            background:
+              "url(../background/pokebg3.jpg) no-repeat center center",
+            backgroundSize: "cover",
+          },
+        }}
       >
-        <Group>
-          <Accordion w="full">
-            <Accordion.Item key={"types"} value="types">
-              <Accordion.Control>Types</Accordion.Control>
-              <Accordion.Panel>
-                <Group>
-                  {types.map((type) => (
-                    <Group key={type} pr={10} gap={4}>
-                      <Checkbox
-                        checked={filters.type?.includes(type)}
-                        onChange={(event) => {
-                          if (event.currentTarget.checked) {
-                            return setFilters((prevFilters) => ({
-                              ...prevFilters,
-                              type: prevFilters.type
-                                ? prevFilters.type.concat(type)
-                                : [type],
-                            }));
-                          }
-                          if (filters.type?.includes(type)) {
-                            const indexOfType = filters.type.indexOf(type);
-                            filters.type.splice(indexOfType, 1);
-                            return setFilters((prevFilters) => ({
-                              ...prevFilters,
-                              type: filters.type,
-                            }));
-                          }
-                        }}
-                      />
-                      <div className={type.concat(" type")}>
-                        {capitalize(type)}
-                      </div>
-                    </Group>
-                  ))}
-                </Group>
-              </Accordion.Panel>
-            </Accordion.Item>
-            <Accordion.Item key={"generations"} value="generations">
-              <Accordion.Control>Generations</Accordion.Control>
-              <Accordion.Panel>
-                <Group>
-                  {generations.map((gen) => (
-                    <Group key={gen} pr={10} gap={4}>
-                      <Checkbox
-                        checked={filters.generation?.includes(gen)}
-                        onChange={(event) => {
-                          if (event.currentTarget.checked) {
-                            return setFilters((prevFilters) => ({
-                              ...prevFilters,
-                              generation: prevFilters.generation
-                                ? prevFilters.generation.concat(gen)
-                                : [gen],
-                            }));
-                          }
-                          if (filters.generation?.includes(gen)) {
-                            const indexOfgen = filters.generation.indexOf(gen);
-                            filters.generation.splice(indexOfgen, 1);
-                            return setFilters((prevFilters) => ({
-                              ...prevFilters,
-                              gen: filters.generation,
-                            }));
-                          }
-                        }}
-                      />
-                      <div>{gen}</div>
-                    </Group>
-                  ))}
-                </Group>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
-        </Group>
+        <Accordion
+          w="full"
+          styles={{
+            root: {
+              background:
+                "rgba(255, 255, 255, 0.2)" /* Adjust the alpha (last) value for transparency */,
+              borderRadius: "10px",
+              backdropFilter: "blur(5px)" /* Adjust the blur value as needed */,
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              padding: "10px",
+              width: "300px" /* Adjust the width as needed */,
+              margin: "20px",
+            },
+            item: {
+              background: "transparent",
+              border: "none",
+              padding: "5px",
+            },
+            control: {
+              background: "transparent",
+              border: "none",
+              padding: "5px",
+              textTransform: "uppercase",
+              fontSize: "1.2rem",
+            },
+          }}
+        >
+          <Accordion.Item key={"types"} value="types">
+            <Accordion.Control>Types</Accordion.Control>
+            <Accordion.Panel>
+              <Group>
+                {types.map((type) => (
+                  <Group key={type} pr={10} gap={4}>
+                    <Checkbox
+                      checked={filters.type?.includes(type)}
+                      onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                          return setFilters((prevFilters) => ({
+                            ...prevFilters,
+                            type: prevFilters.type
+                              ? prevFilters.type.concat(type)
+                              : [type],
+                          }));
+                        }
+                        if (filters.type?.includes(type)) {
+                          const indexOfType = filters.type.indexOf(type);
+                          filters.type.splice(indexOfType, 1);
+                          return setFilters((prevFilters) => ({
+                            ...prevFilters,
+                            type: filters.type,
+                          }));
+                        }
+                      }}
+                    />
+                    <div className={type.concat(" type")}>
+                      {capitalize(type)}
+                    </div>
+                  </Group>
+                ))}
+              </Group>
+            </Accordion.Panel>
+          </Accordion.Item>
+          <Accordion.Item key={"generations"} value="generations">
+            <Accordion.Control>Generations</Accordion.Control>
+            <Accordion.Panel>
+              <Group>
+                {generations.map((gen) => (
+                  <Group key={gen} pr={10} gap={4}>
+                    <Checkbox
+                      checked={filters.generation?.includes(gen)}
+                      onChange={(event) => {
+                        if (event.currentTarget.checked) {
+                          return setFilters((prevFilters) => ({
+                            ...prevFilters,
+                            generation: prevFilters.generation
+                              ? prevFilters.generation.concat(gen)
+                              : [gen],
+                          }));
+                        }
+                        if (filters.generation?.includes(gen)) {
+                          const indexOfgen = filters.generation.indexOf(gen);
+                          filters.generation.splice(indexOfgen, 1);
+                          return setFilters((prevFilters) => ({
+                            ...prevFilters,
+                            gen: filters.generation,
+                          }));
+                        }
+                      }}
+                    />
+                    <div>{gen}</div>
+                  </Group>
+                ))}
+              </Group>
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
       </Drawer>
       <div className="py-2.5">
         <InfiniteScroll
